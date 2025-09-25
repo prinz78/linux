@@ -1,0 +1,259 @@
+
+
+
+# CHOSES à CONAITRE  EVITER SUR LINUX
+
+-Root ou le super utilisateur permet d'acceder et de modifier les fichiers de configurations.
+
+-Linux est sentive case il fait la difference entre les majiscules et les miniscules
+
+-Linux ne tolére pas les éspaces pour nomer les fichier il faut utiliser les dach ou les underscore
+
+-Dans linux le Kernel est un logiciel concus pour recevoir les commandes utilisateurs et n'est pas le systéme d'éxploitation
+
+-Linux est concus pour etre utiliser la plupart du temp en ligne de commande et non pas en interface graphique (CLI et pas GUI)
+
+# Pour consulter la documentation pour une commande
+
+man [nom de la commande]
+
+
+
+
+# les differentes appelation de Root dans linux
+
+-Root Account : c'est le compte super utilisateur qui a tout les droits
+
+-Root : c'est le repertoire racine le plus haut de tout les repertoires, acces au super utilsateur est symbolisé pae /
+
+-Root home diretory : c'est le repertoire racine de l'utilisateur et est symbolisé par / aussi
+
+# le chemin Absolue et le chemin Relative dans un gestionaire de fichier
+
+-le chemin Absolue repart toujour depuis la Root  pour ateindre le repertoire cible par exemple : cd /var/log/samba
+
+-le chemin relative son point de depart est definit toujour dans le repertoire ou se trouve le prompt exemple / cd log apres cd samba
+
+
+
+# pour passer en super utilisateur et pour en sortire
+
+su -, exit
+
+
+
+# pour ce deplacer dans les repertoires linux et lister les elements de bas en haut avec couleur et le numero inode
+
+cd, pwd, ls -ltri
+
+ls -R ~/nom_du_repertoire (affiche toutes l'arboressance sous le repertoire en question)
+
+
+
+# pour crée un fichier
+
+touch, cp, vim
+
+
+
+# pour crée un repertoire
+
+mkdir nom_repertoire rep1 rep2 rep3 (permet de crée plusieur repertoire dans le repertoire courant)
+mkdir -p nom_repertoire/{rep1,rep2,repN} (permet de crée plusieur repertoire sous un repertoire)
+
+# pour coupier un fichier et un repertoire
+
+cp -R(copier fichier), cp repertoire
+
+# pour deplacer un fichier dans un autre repertoire ou le renomer
+
+mv fichierA fichierB (changer le nom du fichier)
+
+mv FichierS repertoire1/ (le deplace dans le repertoire)
+
+
+# pour effacer un fichier ou repertoire
+
+rm -r (efface de facon recursive le repertoire et son arboressence)
+
+# pour crée un soft link, hard link
+
+ln -s /home/repertoire_utilisateur/../nom_du_ficier reference , ln /home/repertoire_utilisateur/../nom_du_ficier reference
+
+
+# pour rechercher un fichier ou repertoire
+
+-find / -name nom du fichier
+
+-locate nom du fichier (il faut utiliser la commande "update" en super user pour metre la base de donnée de recherche à jour)
+
+
+# pour changer les permissions en mode lettres ou numerique
+
+chmod (u,g,o,a) -/+ (w,r,x) nom du ficier ou repertoire
+
+chmod
+0 : pas de permission,
+1 : exucuter,
+2 : ecrire,
+3 : executer et ecrire,
+4 : lire,
+5 : lire et executer,
+6 : lire et ecire,
+7 : toutes les permissions
+
+    + nom du fichier ou repertoire
+
+# pour changer l'apartenance d'un dossier ou fichier a un utilisateur ou un groupe
+
+chown nom_utilisateur nom_du_fichier ou repertoire
+
+chgrp nom_du_groupe nom_du_fichier ou repertoire
+
+# ACL (Acces Control List) permet de metre des permission invisible de la part de l'adminstrateur root sur l'utilsateur pour ne
+pour ne pas effacer par exxemple un fichier tres important par erreur dans son propre home directory
+
+getfacl /path/to/file (pour avoir des infos sur le fichier ou le répértoire en question)
+
+setfacl -m u:user:rwx /path/to/file (pour les utilisateur)
+
+setfacl -m g:group:rw /path/to/file (pour les groupes)
+
+setfacl -dm "entry" /path/to/file (pour faire heriter les permission a tout les dossiers et fichiers apartenant qu dossier cible)
+
+setfacl -x u:user /path/to/file (pour effacer la permision pour un utilisateur)
+
+setfacl -b /path/to/file (pour effacer toutes les permissions de tout les utilisateurs)
+
+
+# pour avoir de l'aide sur les commande il existe trois type de commande specifique
+
+whatis nom_de_la_commande
+
+nom_de_la_commande --help
+
+nom_de_la_commande commande
+
+
+
+# pour pourvoir ecrire dans un fichier sans l'ouvrire
+
+echo "j'ecris mon texte" >> nom du fichier (si c'est une seul redirection toutes les lignes s'effassent)
+
+cat nom de fichier (pour afficher le contenu du fichier sans l'ouvrire)
+
+
+# il y a troi type de output input :
+- stdin qui est symbolisé par 0 et concerne tout type d'entrée comme le clavier par exemple sa redirection est le symbole "<" :
+
+cat < fichier (affiche le contenus du fichier)
+mail -s "office memo" email@serveur.com < fichier ou il y'a l'email qui est ecrits(charge le texte dans l'adresse emal)
+
+- stdout qui est symbolisé par 1 qui renvois vers une sortie ecran, fichier, imprimante, ...ect :
+
+pwd >> fichier
+ms -ltr > fichier
+
+- stderr qui est symbolisé par 2 et qui permet de capter le retour d'erreur d'une commande
+
+ls -l /root 2> ficherreur
+
+telnet localhost 2> ficherreur
+
+
+
+
+====================================================/TEXT PROCESSOR COMMAND/+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+# pour rediriger dans un fichier est ene même temps afficher a l'ecran le resultat d'une commande on utilise "tee" avec le pipe "|", exemple :
+
+ls -ltr | tee file1 file2 fileN (enregistre le resultat possible dans plusieurs fichier en meme temps mais ecrase a chaque fois le precedent)
+
+ls -ltr | tee -a file1 file2 fileN (enregistre le resultat possible dans plusieurs fichier en meme temps, mais avec l'option "-a" ajoute les nouvelles entrées)
+
+
+# pipe "|" permet de connecter la sortie d'une commande à l'entrée d'une autre commande ce qui peut pafois simplifier beaucoups de choses, exemple :
+
+ls -ltr /etc | more (parfois la liste d'un repertoire est tres longue et il faut l'afficher en plusieurs fois donc on utilise "more")
+ls -ltr /etc | tail -2 (on affiche le dexieme élément a partir du bas
+
+
+# semi colones ";" permetent de executer plusieurs commande en même temps en etant separés par ce dernier,
+les commandes non valident n'arretent pas l'execution exemple :
+
+mkdir dir_test ; cd dir_test ; touch file_test ; echo "ich bin da in echo test" | tee -a file_test ; cat file_test;
+
+# pour pouvoir afficher le contenus d'un fichier qui contient enormements de caractéres on utilse :
+
+more nom_du_fichier (affiche le fichier depuis le debut en le deroulant 10 lignes par 10 lignes ou 1 par 1 avec les fleches directionnelle)
+less nom_du_fichier (affiche le fichier depuis la fin en le deroulant 10 lignes par 10 lignes ou 1 par 1 avec les fleches directionnelle)
+
+head nombre_de_lignes nom_du_fichier(le nombres deligne dupuis le debut dufichier)
+head nombre_de_lignes nom_du_fichier(le nombres deligne dupuis la fin du fichier)
+
+# cut permet de retourner n'importe quel texte en une partie precise voulus par l'utilsateur
+
+cut nom_de_fichier (ne retourne rien)
+cut --version (verifie une version)
+cut -c1 nom_de_fichier ()retourne le premier caractére du fichier en question)
+cut -c1,2,4 nom_de_fichier(retourne le prmier le 2eme et le 4eme caractére)
+cut -c1-3 nom_de_fichier(retourne du premier au 3eme caractére)
+cut -c1-3,6-8 nom_de_fichier(retourne du premier au troisieme et du sixieme au huitieme)
+cut -b1-3 nom_de_fichier(retourne les bytes ou octet)
+cut -d: -f 6 /etc/password (retourne ce qu'il y a apres la 6 eme colone ou le charactere specifié apres le -d)
+cut -d: -f 6-7 /etc/password (meme chose retourne juste ce qu'il y a entre la 6 eme et le 7 eme colone)
+ls -l | cut -c2-4 (redirige la sortie de ls sur cut et affiche la liste des fichiers et repertoires a partire des positions definis)
+
+
+# la commande awk permet de recuperer des données d'un texte de facon precise
+
+awk --version
+awk '(print $1)' file (affiche la prmierre colone du fichier )
+ls -l | awk '(print $1,4,6)' (affiche la colone numer 1,4,6 du resultat de la commande ls)
+ls -l | awk '(print $NF)' (Affiche 'NF' = la dernierre colone de la commande ls)
+awk '/lemot/' {print} file (recherche le mot en question dans le fichier )
+awk -F: '{print $1}' /etc/passwd(affiche la premiere colone apres le delimiteur :)
+cat file | awk '{$2="Imran"; print $0}' (remplace le mot de la deuxieme colone par Imran)
+awk 'length($0) > 15' file (retourne toutes les ligne ou il y a plus de 14 caractére)
+ls -l | awk '{if($9 == "lemot") print $0;}' (recherche le mot ou se trouve le resultat de la commande ls)
+ls -l | awk '{print NF}' (retourne le nombre de colone du resultat de la commande ls)
+
+
+# La commande "grep"(Global Regular Expression Print) permet de faire des recherche bien specifique ligne par ligne
+
+grep --version
+grep mot_clé file (recherche le mot clé dans le fichier)
+grep -c mot_clé file (compte le nombre des mot clé et l'affiche)
+grep -i mot_clé file (ignore le sensitive key que comporte le mot dans le fichier)
+grep -n mot_clé file (affiche les numero de ligne et les mot qui sont avec)
+grep -v mot_clé file (exclue le mot clé et affiche le reste du fichier)
+grep mot_clé file | awk '{print $1}' (recherche le mot clé dans le fichier et affiche que la premiere ligne)
+ll  | grep -i mot_clé (permet d'afficher la totalité de la ligne de ka commande ls en relation avec le mot clé)
+
+egrep -i "mot_clé1 | mot_clé2" (cherche les deux mot clé en excluant le sentive case)
+
+# la commande "sort" permet de lister les resultat en les reoraganisant de facon alphabetique ou numérique
+# la commande "uniq" permet eleminer la duplication
+
+sort --version
+sort file (organise en ordre croissant)
+sort -r file (inverse l'ordre alphabetique)
+sort -k2 file (selon le numero qu'on met permet de reorganiser sur le numero de colonne desiré)
+
+sort file | uniq (toujours utiliser sort avec uniq sinon ca fonctionne pas, enléve la duplication)
+sort file | uniq -c ( elimine la duplication et retourne le nombre de lignes)
+sort file | uniq -d ( montre les lignes duplique )
+
+# les commandes "diff" et "cmp" permettent de comparer le contenus de deux fichiers pour trouver la difference, la premierre commande compare les caractéres
+la deuxiemme commande compare les Bytes
+
+diff file (compare le contenu des fichiers en caractére)
+cmp file (compare en byte)
+
+
+
+
+
+
+
+
