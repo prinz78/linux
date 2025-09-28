@@ -189,13 +189,13 @@ more nom_du_fichier (affiche le fichier depuis le debut en le deroulant 10 ligne
 less nom_du_fichier (affiche le fichier depuis la fin en le deroulant 10 lignes par 10 lignes ou 1 par 1 avec les fleches directionnelle)
 
 head nombre_de_lignes nom_du_fichier(le nombres deligne dupuis le debut dufichier)
-head nombre_de_lignes nom_du_fichier(le nombres deligne dupuis la fin du fichier)
+tail nombre_de_lignes nom_du_fichier(le nombres deligne dupuis la fin du fichier)
 
 # cut permet de retourner n'importe quel texte en une partie precise voulus par l'utilsateur
 
 cut nom_de_fichier (ne retourne rien)
 cut --version (verifie une version)
-cut -c1 nom_de_fichier ()retourne le premier caractére du fichier en question)
+cut -c1 nom_de_fichier (retourne le premier caractére du fichier en question)
 cut -c1,2,4 nom_de_fichier(retourne le prmier le 2eme et le 4eme caractére)
 cut -c1-3 nom_de_fichier(retourne du premier au 3eme caractére)
 cut -c1-3,6-8 nom_de_fichier(retourne du premier au troisieme et du sixieme au huitieme)
@@ -251,7 +251,33 @@ diff file (compare le contenu des fichiers en caractére)
 cmp file (compare en byte)
 
 
+# la commande "wc" word count permet de conter le nombre de ligne,mot ou byte dans un fichier
 
+wc --version or --help
+wc -l file (permet de conter le nombre de ligne dans un fichier)
+wc -w file (permet de conter le nombre de mot dans un fichier)
+wc -c file (permet de compter le nombre de byte dans un fichier)
+ls -l | wc -l (permet de rediriger de rediriger la sortie de lsite pour compter le nombre de ligne avec wc)
+ls -l |grep drwx | wc -l (exmple qui permet de compter le nombre de repertoire de liste retourne par ls)
+
+
+# les commandes "tar" et  "gzip" permetent de regrouper des fichiers et dossiers et de les copresser par la suite
+
+tar cvf nom_quelconque.tar chemin_du_repertoire_a_regrouper(regroupe les fichier a compresser sous un seul repertoire copressible)
+
+tar xvf nom_du_fichier.tar(separe tout les fichiers compresse)
+
+gzip nom_du_fichier.tar (compresse le fichier en zip)
+
+gzip -d nom_du_fichier_compresse.tar.gz
+
+# La commande trance sert a reduire ou etendre un fichier, il faut faire attention car lors de la reduction du fichier des donnees vont disparaitre
+
+truncate -s size-integer file
+
+# la commande "split" permet de separer le contenus d´un fichier en plusieurs fichiers selon l´entre souhaite
+
+split -l entre(nombre entier) file
 
 
 
