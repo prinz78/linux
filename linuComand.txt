@@ -280,6 +280,76 @@ truncate -s size-integer file
 split -l entre(nombre entier) file
 
 
+====================================================/Finding Systeme Informations/+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+# La commande "uname" permet de retrouver certaines informations concernant le systeme d'exploitation tres vite et avec precision
+
+uname -s (retrouve le nom de l"os)
+
+uname -n (retrouve le node et le host name de l'utilisateur actuel)
+
+uname -r (donne la release du Kernel, designe Le noyau Linux seul)
+
+uname -v (pour avoir l'information sur le kernel lui meme, sa date de sortie)
+
+uname -m (pour afficher le nom de l'architecture du systeme hardware, x64 par exemple)
+
+uname -p ou i (permet d'avoir le nom du precesseur)
+
+uname -o (pour avoir le nom de la distribution du systeme d'exploitation)
+
+cat /etc/redhat-release (permet d'avoir des information plus precise sur le systeme d'exploitation et sa distribution)
+
+
+
+# la commande "dmidecode" (duping computer) permet d'avoir toutes les informations voulue sur le materiel physique de la machine utilise
+# il faut utiliser l'option [--type] suivie des noms de peripheriques comme liste pour avoir les infos concernant cet elelment materiel:
+
+Type Information
+----------------------------------------
+0 BIOS
+1 System
+2 Base Board
+3 Chassis
+4 Processor
+5 Memory Controller
+6 Memory
+7 Cache
+8 Port Connector
+9 System Slots
+10 On Board Devices
+11 OEM Strings
+12 System Configuration Options
+13 BIOS Language
+14 Group Associations
+15 System Event Log
+16 Physical Memory Array
+17 Memory Device
+18 32-bit Memory Error
+19 Memory Array Mapped Address
+20 Memory Device Mapped Address
+21 Built-in Pointing Device
+22 Portable Battery
+23 System Reset
+24 Hardware Security
+25 System Power Controls
+26 Voltage Probe
+27 Cooling Device
+28 Temperature Probe
+29 Electrical Current Probe
+30 Out-of-band Remote Access
+31 Boot Integrity Services
+32 System Boot
+33 64-bit Memory Error
+34 Management Device
+35 Management Device Component
+36 Management Device Threshold Data
+37 Memory Channel
+38 IPMI Device
+39 Power Supply
+
+
+
 
 
 
