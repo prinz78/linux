@@ -353,3 +353,124 @@ Type Information
 
 
 
+====================================================/Systeme Admistration/+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+# vi et vim son des editeurs de texte par deffaut sur linux pour les manipuler on utilise les touches suivantes :
+
+vi nom_fichier (pour cree un fichier)
+
+i (mode insert pour manipuler le fichier comme ajouter du texte)
+
+ESC :wq! ou SHIFT+zz (permet de sauvegarder les modifications)
+
+d (efface toute la ligne )
+
+x (efface caracter par caracter)
+
+r (replace le caractere par un autre caracter)
+
+o (pour ajouter une nouvelle ligne vide entre deux lignes existante)
+
+a (permet d'inserer du texte dand l'espace entre deux mot)
+
+u (permet de coriger une erreur en revenant a l'etat precedant)
+
+/mot (permet de retrouver le mot dans le fichier en question)
+
+
+# "sed" est une commande tres puissante qui permet de manipuler un texte se trouvant dans un fichier de different manierre :
+
+sed -i n'importe quelle expression( sed en general n'eregistre pas les modifications sans l'oprion -i pour eviter d'eventuelles erreures fatales)
+
+sed 's/mot1/mot2/g' nom_du_fichier (permet de remplace le mot 1 par le mot2 dans tout le texte)
+
+sed 's/mot1/ /g' nom_du_fichier (permet de remplace le mot 1 par un espace dans tout le texte)
+
+sed '/mot1/d' nom_du_fichier (pour effacer toutes les lignes contenant le mot1)
+
+sed '/^$/d' nom_du_fichier (apres le caracter retoure a la ligne ^ + ligne vide $, efface tout les espace entre les lignes )
+
+sed '1d' nom_du_fichier (efface la premiere ligne, on peut rajouter d'autres ligne 2,4,13,...ectd)
+
+sed 's/\t/g' nom_du_fichier (remplace tabulation par espace)
+
+sed -n 12,18p nom_du_fichier (retourne les lignes de 12 a 18)
+
+sed G nom_du_fichier (retourne le texte avec des lignes separe)
+
+sed '8!/mot1/c/' nom_du_fichier (remplace mot1 par le caractere c sauf la ligne numero 8)
+
+
+********************************* User account manager *********************************
+
+# pour cree un utilisateur c'est useradd, pour effacer un utilisateur c'est userdel, pour modifier les utilisateurs usermod :
+
+# les fichier pour consulter les differentes information concernant les utilisateur c'est /etc/shadow ou /etc/passwd:
+
+useradd nom_utilisateur (ajoute utilisateur)
+
+useradd -g nom_utilisateur groupe_pour_utilisateur (ajoute utilisateur et l'affecte a un nouveau groupe)
+
+useradd -c "commentaire "nom_utilisateur (ajoute utilisateur avec un commentaire)
+
+useradd -s nom_utilisateur /bin/shell (ajoute utilisateur avec le shell choisis)
+
+useradd - m nom_utilisateur /home/nom_utilisateur (ajoute utilisateur avec un home directory)
+
+useradd nom_utilisateur (ajoute utilisateur en definissant l'utilisateur lui meme)
+
+usermod -G nom_du_groupe nom_utilisateur (affecte de facon implicite l'utilisateur a un groupe)
+
+chgrp -R nom_groupe nom_utilisateur (affecte de facon explicte un utilisateur a un groupe)
+
+userdel -r nom_utilisateur (efface l'utilisateur et tout son arboressence)
+
+id nom_utilisateur (permet d'avoir les information sur l'utilisateur)
+
+cat /etc/shadowfile (permet aussi d'avoir des infos sur l'utilisateur)
+
+cat /etc/passwd (permet aussi d'avoir des infos sur l'utilisateur)
+
+
+
+# la commande "groupadd" permet de cree un groupe on peut i metre les options deja vue avec les utilisateurs
+
+groupadd nom_du_groupe (ajoute un groupe)
+
+cat /etc/group (affiche les infos du groupe et de leur membre)
+
+
+
+# concernant la creation du mot de passe utilisateur on utlilise la commande "passwd"
+
+# pour gerer les particularites du mot de passe utilisateur on utilise "chage" avec ces options
+
+# pour parametre les mots de passes utilisateurs de leur creation on va sur le fichier /etc/login.def
+
+passwd nom_utilisateur
+
+chage -m 3 nom_utilisateur (definit la date de qund le changement de mot de passe a ete fait : cela permet d'affecter a l'utilisateur la creation
+# d'un nouveau mot de passe de son arrive, il a 3 jours pour le changer durant son premier login )
+
+chage -M 90 nom_utilisateur (la duree de vie du mot de passe est de 3 mois)
+
+chage -d 5 nom_utilisateur (dispose de 5 jours apres l'expiration pour le changer sinon il devient inactif )
+
+chage -w 10 nom_utilisateur (recoit une alerte 10 jours avant que sont mot de passe n'expire)
+
+chage -i 3 nom_utilisateur (duree d'inactivite 3 apres cela il tombe en mode expiration)
+
+chage -e nom_utilsateur (date d'expiration du compte apres cela il est plus recuperable)
+
+
+
+
+
+
+
+
+
+
+
+
+
