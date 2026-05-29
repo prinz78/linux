@@ -398,7 +398,7 @@ sed -n 12,18p nom_du_fichier (retourne les lignes de 12 a 18)
 
 sed G nom_du_fichier (retourne le texte avec des lignes separe)
 
-sed '8!/mot1/c/' nom_du_fichier (remplace mot1 par le caractere c sauf la ligne numero 8)
+sed '8! s/mot1/c/' nom_du_fichier (remplace mot1 par le caractere c sauf la ligne numero 8)
 
 
 ********************************* User account manager *********************************
@@ -465,6 +465,30 @@ chage -e nom_utilsateur (date d'expiration du compte apres cela il est plus recu
 
 
 
+
+##### Switch les utilisateur en mode Sudo qui veut dire adminstrateur qui appartien au groupe wheel
+
+su - (pour passer en mode root)
+
+sudo nom_command (fdisk ou dmidecode sont des commande adminstrateur)
+
+visudo (est un fichier qui se trouve dans le fichier /etc/sudoers il faut aller dans l'option wheel pour ajouter l'utilisateur autant que admin)
+
+usermod -aG wheel nom_utilisateur (ajoute l'utilisateur au groupe adminstrateur)
+
+
+
+##### User monitoring ce sont des commandes qui permetent d'afficher tout types d'informations sur les utilisateurs
+
+who nom_utilisateur (permet de retourner le nom d'utilisateur + son numero de terminale + date de connexion et l'heure de connexion qui sont actuellement connecte)
+
+last nom_utilisateur (last retourne un historique des personnes qui se sont connecte)
+
+w nom_utilisateur (retourne presque la meme chose que who mais avec plus de precision sur le temp de cession et les processus execute)
+
+pinky nom_utilisateur (pinky est un outils extrememnt puissant qu'il faut installer au prealable permet de tracer tout les utilisateurs yum install pinky -y)
+
+id nom_utilisateur (permet d'avoir des informations sur un seul utilisateur sur les permissions qu'il a et les groupes auquel il appartien et d'autres chose)
 
 
 
