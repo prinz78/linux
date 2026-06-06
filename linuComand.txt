@@ -491,7 +491,38 @@ pinky nom_utilisateur (pinky est un outils extrememnt puissant qu'il faut instal
 id nom_utilisateur (permet d'avoir des informations sur un seul utilisateur sur les permissions qu'il a et les groupes auquel il appartien et d'autres chose)
 
 
+##### Chat avec utilisateur pour echange de message important
 
+users (permet de voir qui est actuellement en ligne pour communiquer avec lui)
+
+wall (ecrt un message atout les utilisateurs sur leurs ecrans, pour envoyer le message il faut faire : CTRL+d)
+
+write nom_utilisateur (permet d'envoyer un message a un seul utilisateur, pour envoyer le message il faut faire : CTRL+d)
+
+
+##### il y a d'autres permission special qu'on peut ajouter sur des fichiers pour les utilisateurs et groupe seulement pour
+la permission d'executer ces fichiers, une autre sur les repertoires pour securise la non supression suite a une maldresse d'un utilisateur tierce.
+
+chmod u+s nom_du_fichier_executable (permet de donner la permission q'au createur de fichier pour pouvoir l'executer, apres avoir lance la commande ls on constate dans la
+ colone permission la lettre "s" qui veut dire setuid:)
+
+chmod u-s (pour effacer le bit uid)
+
+chmod u+g nom_du_fichier_executable (permet de donner la permission q'au membre du groupe enquestion de pouvoir l'executer, apres avoir lance la commande ls on constate dans la
+ colone permission la lettre "s" qui veut dire setgid:)
+
+chmod u-g (pour affacer le bit gid)
+
+find / -perm /6000 -type f (permet de trouver tout les fichiers qui sont en relation avec les bite setuid and setgid)
+
+chomd +t /nom_du_repertoir (ajoute un bit special "t" qui signifie que ce repertoire et tout ce qu'il contient ne peuvent etre supprime que par le Root ou
+l'utilisateur proprietaire)
+
+##### Linux Account Authentication : qund on cree un utilisateur sur le serveur meme on le cree de facon local car son repertoire user est localement sur les fichier du serveur
+mais en verite il faut cree le repertoire sous un nom de domaine ou une autres machine ou les infos utilisateurs seront stocke pour les centraliser afin de les utiliser
+dans tout les type de serveurs ou ils ont la permission d y accede, pour cela on utilise le protocole LDAP LDAP (Lightweight Directory Access Protocol)
+
+****** explication complete est sur le fichier "LDAP Explanation.txt"
 
 
 
