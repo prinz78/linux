@@ -1,0 +1,132 @@
+## LDAP (Lightweight Directory Access Protocol)
+
+### Définition simple
+**LDAP** est un protocole standardisé qui permet de **consulter et modifier des informations** stockées dans un **annuaire** (comme un annuaire téléphonique, mais pour des ressources informatiques).
+
+### Analogie simple
+Imaginez un **annuaire téléphonique géant** pour toute votre entreprise :
+- Vous y cherchez le numéro de téléphone de "Jean Dupont"
+- L'annuaire vous donne : son bureau, son email, son téléphone, etc.
+
+LDAP fait la même chose mais pour les **utilisateurs, ordinateurs, imprimantes, serveurs** d'un réseau.
+
+### À quoi ça sert concrètement ?
+
+#### 1. **Authentification centralisée** (le plus courant)
+Au lieu d'avoir un mot de passe différent sur chaque serveur, vous avez **un seul compte** pour tout :
+- Se connecter à n'importe quel serveur Linux
+- Accéder à votre messagerie
+- Ouvrir une session sur votre poste Windows
+- Se connecter à l'Intranet de l'entreprise
+
+**Exemple concret :** Vous tapez votre mot de passe une seule fois le matin, et vous êtes connecté à TOUS vos services.
+
+#### 2. **Annuaire d'utilisateurs**
+Stocke toutes les informations sur les employés :
+- Nom, prénom, email, téléphone
+- Service, bureau, responsable hiérarchique
+- Droits d'accès (qui peut aller où)
+
+#### 3. **Gestion des ressources**
+- Quels utilisateurs ont accès à quelle imprimante ?
+- Qui peut monter tel partage réseau ?
+- Quels serveurs sont dans quel département ?
+
+### Structure d'un annuaire LDAP (arborescence)
+
+C'est une structure **arborescente** (comme l'arborescence de vos dossiers) :
+
+```
+dc=entreprise,dc=com (racine - votre domaine)
+│
+├── ou=Utilisateurs (unité organisationnelle)
+│   ├── uid=labuser1 (utilisateur)
+│   ├── uid=labuser2
+│   └── uid=labuser3
+│
+├── ou=Groupes
+│   ├── cn=Administrateurs
+│   └── cn=Utilisateurs
+│
+└── ou=Serveurs
+    ├── cn=SRV-WEB-01
+    └── cn=SRV-DB-01
+```
+
+### Termes LDAP essentiels
+
+| Terme | Signification | Exemple |
+|-------|---------------|---------|
+| **DN** (Distinguished Name) | Nom complet unique | `uid=labuser2,ou=Utilisateurs,dc=entreprise,dc=com` |
+| **RDN** (Relative DN) | Nom relatif | `uid=labuser2` |
+| **CN** (Common Name) | Nom commun | `cn=Jean Dupont` |
+| **OU** (Organizational Unit) | Unité organisationnelle | `ou=ServiceInformatique` |
+| **DC** (Domain Component) | Composant du domaine | `dc=entreprise, dc=com` |
+| **UID** (User ID) | Identifiant utilisateur | `uid=labuser2` |
+
+### LDAP vs Base de données classique
+
+| Base de données | LDAP |
+|----------------|------|
+| Optimisée pour **écrire** souvent | Optimisée pour **lire** très souvent |
+| Modifications fréquentes | Lecture très fréquente, modifications rares |
+| Requêtes complexes (SQL) | Requêtes simples et rapides |
+| Exemple : comptabilité | Exemple : authentification, annuaire |
+
+### Exemple pratique : se connecter avec LDAP
+
+Quand vous faites `ssh -l labuser2 192.168.1.198` :
+
+**Sans LDAP :**
+1. Le serveur regarde dans son fichier `/etc/passwd` local
+2. Vérifie si `labuser2` existe
+3. Si non → Permission denied
+
+**Avec LDAP :**
+1. Le serveur interroge le serveur LDAP : "Y a-t-il un utilisateur `labuser2` ?"
+2. Le serveur LDAP répond : "Oui, voici son mot de passe haché"
+3. Le serveur vérifie le mot de passe
+4. Authentification réussie !
+
+### Avantages de LDAP
+
+✅ **Centralisation** : Un seul compte pour tous les services
+✅ **Sécurité** : Le mot de passe n'est pas stocké sur 20 serveurs différents
+✅ **Facilité d'administration** : Créer un utilisateur une fois, accessible partout
+✅ **Standard** : Compatible avec presque tous les systèmes (Windows, Linux, macOS)
+✅ **Déconnexion globale** : Désactivez un compte, il ne peut plus se connecter nulle part
+
+### Inconvénients
+
+❌ Complexité à mettre en place
+❌ Point de défaillance unique (si le serveur LDAP tombe, plus personne ne se connecte)
+❌ Performance légèrement plus lente qu'une authentification locale
+
+### LDAP dans les entreprises
+
+Les équivalents/mises en œuvre courantes :
+- **Active Directory** (Microsoft) = LDAP amélioré + Kerberos + DNS + ...
+- **OpenLDAP** (Open Source, très utilisé sous Linux)
+- **389 Directory Server** (Red Hat)
+- **Apache Directory Server**
+
+### Exemple de connexion SSH avec LDAP
+
+Imaginons que votre lab ait un serveur LDAP :
+```bash
+# L'utilisateur labuser2 existe uniquement dans l'annuaire LDAP
+# Pas besoin de le créer sur chaque serveur !
+
+ssh labuser2@serveur1   # OK (va chercher dans LDAP)
+ssh labuser2@serveur2   # OK (pareil)
+ssh labuser2@serveur3   # OK (encore pareil)
+
+# Si vous supprimez labuser2 du LDAP à 14h00
+# À 14h01, il ne peut plus se connecter à AUCUN serveur !
+```
+
+### En résumé
+
+**LDAP** = Un annuaire central qui contient tous vos utilisateurs, ordinateurs et ressources. Au lieu de gérer des comptes localement sur chaque machine, tout le monde consulte le même annuaire pour savoir qui a le droit de faire quoi.
+
+C'est comme le **standard téléphonique** d'une grande entreprise : vous appelez un numéro unique, et l'opératrice (le serveur LDAP) vous donne les informations ou vous redirige vers la bonne personne.
