@@ -26,7 +26,7 @@ man [nom de la commande]
 
 -Root : c'est le repertoire racine le plus haut de tout les repertoires, acces au super utilsateur est symbolisé pae /
 
--Root home diretory : c'est le repertoire racine de l'utilisateur et est symbolisé par / aussi
+-Root home diretory : c'est le repertoire racine de l'utilisateur et est symbolisé par ~
 
 # le chemin Absolue et le chemin Relative dans un gestionaire de fichier
 
@@ -522,7 +522,76 @@ l'utilisateur proprietaire)
 mais en verite il faut cree le repertoire sous un nom de domaine ou une autres machine ou les infos utilisateurs seront stocke pour les centraliser afin de les utiliser
 dans tout les type de serveurs ou ils ont la permission d y accede, pour cela on utilise le protocole LDAP LDAP (Lightweight Directory Access Protocol)
 
+Il ya plusieurs logiciel qui font du Repertory Managing :
+
+-active Directory : fait pas microsoft
+
+-IDM (Identity Manager) : produit payant Redhat
+
+-WinBind : utilise par linux pour communiquer avec les serveurs active directory de windoows
+
+-OpenLDAP : Gestionaire de repertoire totalement libre et ouvert
+
+-IBM Directory Serveur : Produit IBM peut etre utiliser sur RedHat
+
+-Jumpcloud : service dedie payant en cloud pour serveur gestionaire de repertoire
+
 ****** explication complete est sur le fichier "LDAP Explanation.txt"
+
+
+
+
+################### Sytem utility commands : permet d'avoir des informations sur les utilisateurs etle systeme et aussi
+d'utiliser des outils comme une calculatrice qui peuvent aider l'adminstrateur.
+
+date (permet d'avoir la date avec plus de precision)
+
+uptime (permet d'avoir une vue d'ensemble rapide sur qui est connete les processus en cour, depuis combient detemp la machine est en marche)
+
+hostname (permet de savoir sur quel machine on est connecte)
+
+wich nom_de_la_comamnde (permet de savoir ou est le repertoire de la commande)
+
+cal (permet d'avoir le calendrier)
+
+bc (permet de faire des calcules)
+
+
+
+################### TRES IMPORTANt!!!! Processes and Jobs ----------------------------
+
+-services : les Applications dans le language linux c'est "services" qui signifie un logiciel qui est charge dans la memeoire comme thunderbird par exemple.
+
+-script : c'est un enssembles de scommandes qui sont dans un fichier executable pour demarer un service ou lancer une commande linux par exemple.
+
+-process : quand un service est lance il demare un ou plusieurs processus comme la carte reseau par exemple qui lance plusieurs protocoles pour communiquer. On reconait
+les processus par leur ID.
+
+-Daemon : reste generalement en arriere plan discretement et coute les entrees sortie des trafics des process.
+
+-threads : ils son genere par les processus par exemple : pour le NFS(Network File Systeme) permet aux utilisateur qui se conaictent de facon distante de partager les repertoires
+et les fichiers comme si ils etaient sur leur propre machine, a cahque fois qu'il y a ce partage le process cree un thread pour chaque machine
+
+-job or workers : execute de facon programe un service ou un process a un moment definis par l'utilisateur.
+
+systemctl (pour )
+
+ps
+
+top
+
+kill
+
+crontab
+
+at.
+
+
+
+
+
+
+
 
 
 

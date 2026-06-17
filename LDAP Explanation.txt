@@ -1,7 +1,8 @@
 ## LDAP (Lightweight Directory Access Protocol)
 
 ### Définition simple
-**LDAP** est un protocole standardisé qui permet de **consulter et modifier des informations** stockées dans un **annuaire** (comme un annuaire téléphonique, mais pour des ressources informatiques).
+**LDAP** est un protocole standardisé qui permet de **consulter et modifier des informations**
+stockées dans un **annuaire** (comme un annuaire téléphonique, mais pour des ressources informatiques).
 
 ### Analogie simple
 Imaginez un **annuaire téléphonique géant** pour toute votre entreprise :
