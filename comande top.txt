@@ -1,0 +1,154 @@
+Absolument ! Je vais vous expliquer en détail la commande `top` sous CentOS 9.
+
+---
+
+## Que fait la commande `top` ?
+
+`top` est un **moniteur système interactif en temps réel** qui affiche :
+- Les **processus en cours d'exécution**
+- Leur **utilisation des ressources** (CPU, mémoire, etc.)
+- Les **statistiques globales** du système (charge, mémoire totale, etc.)
+
+C'est l'outil de diagnostic le plus utilisé par les administrateurs pour **surveiller l'activité du système** et identifier les processus consommateurs de ressources.
+
+---
+
+## Que retourne-t-elle ?
+
+`top` retourne un affichage dynamique qui se divise en **deux parties principales** :
+
+### 1. Le résumé système (5 premières lignes)
+
+```
+top - 14:23:15 up 3 days,  2:15,  3 users,  load average: 0.08, 0.03, 0.01
+Tasks: 215 total,   1 running, 214 sleeping,   0 stopped,   0 zombie
+%Cpu(s):  2.3 us,  0.7 sy,  0.0 ni, 96.8 id,  0.0 wa,  0.0 hi,  0.2 si,  0.0 st
+MiB Mem :  15708.4 total,   2345.6 free,   8241.2 used,   5121.6 buff/cache
+MiB Swap:   4096.0 total,   4096.0 free,      0.0 used.   7123.8 avail Mem
+```
+
+| Ligne | Information | Explication |
+|-------|-------------|-------------|
+| **Ligne 1** | Heure, uptime, utilisateurs, charge moyenne | Charge sur 1, 5, 15 minutes |
+| **Ligne 2** | Nombre total de processus | running, sleeping, stopped, zombie |
+| **Ligne 3** | Utilisation CPU | us (user), sy (system), id (idle), wa (wait I/O), etc. |
+| **Ligne 4** | Mémoire physique (RAM) | total, free, used, buff/cache |
+| **Ligne 5** | Mémoire swap | total, free, used, available |
+
+### 2. La liste des processus (tableau)
+
+```
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+   1234 root      20   0  215432  84564  12345 S   5.6   0.9   2:34.12 firefox
+   5678 mysql     20   0 3145672 124567  12345 S   2.1   0.8   5:23.45 mysqld
+   9012 user1     20   0  123456  34567  12345 R   1.2   0.2   0:12.34 bash
+```
+
+| Colonne | Signification |
+|---------|---------------|
+| **PID** | Identifiant unique du processus |
+| **USER** | Propriétaire du processus |
+| **PR** | Priorité du processus (kernel) |
+| **NI** | Niveau "nice" (priorité utilisateur) |
+| **VIRT** | Mémoire virtuelle totale utilisée (Ko) |
+| **RES** | Mémoire résidente (RAM physique utilisée) |
+| **SHR** | Mémoire partagée utilisée |
+| **S** | État du processus (R=running, S=sleeping, Z=zombie) |
+| **%CPU** | Pourcentage d'utilisation CPU |
+| **%MEM** | Pourcentage de mémoire utilisée |
+| **TIME+** | Temps CPU total utilisé |
+| **COMMAND** | Nom de la commande |
+
+---
+
+## Fonctionnalités interactives
+
+La sortie est **interactive**. Une fois `top` lancée, vous pouvez utiliser ces touches :
+
+| Touche | Action |
+|--------|--------|
+| `P` | Trier par **utilisation CPU** (par défaut) |
+| `M` | Trier par **utilisation mémoire** |
+| `N` | Trier par **PID** |
+| `T` | Trier par **temps CPU** |
+| `k` | **Tuer** un processus (demande le PID) |
+| `r` | **Renicer** un processus (changer priorité) |
+| `q` | **Quitter** top |
+| `h` | Afficher l'aide |
+| `1` | Afficher chaque **cœur CPU** individuellement |
+| `u` | Filtrer par **utilisateur** |
+| `/` | Rechercher un processus |
+
+---
+
+## Exemple d'utilisation sous CentOS 9
+
+```bash
+# Lancer top
+top
+
+# Lancer top avec mise à jour toutes les 2 secondes
+top -d 2
+
+# Lancer top en mode batch (pour script)
+top -b -n 1 > processus.txt
+
+# Afficher uniquement les processus d'un utilisateur
+top -u root
+
+# Afficher avec une colonne supplémentaire (ex: PPID)
+top -o %MEM  # tri par mémoire
+```
+
+---
+
+## Analyse pratique : que surveiller ?
+
+### 🔴 Signes d'alerte :
+
+1. **%CPU élevé (> 80%)** : un processus monopolise le CPU → vérifier quel processus avec `P`
+2. **%MEM élevé** : RAM saturée → risque de swap → vérifier avec `M`
+3. **Load average > nombre de cœurs CPU** : système surchargé
+4. **%wa (I/O wait) élevé** : le système attend des opérations disque → lenteur probable
+5. **Processus zombies** : processus terminés mais non récupérés par le parent
+
+### 🟢 Bonne santé :
+
+- `%id` (idle) élevé : CPU disponible
+- `load average` < nombre de cœurs
+- Mémoire disponible suffisante
+
+---
+
+## Alternative moderne : `htop`
+
+Sur CentOS 9, vous pouvez aussi installer `htop` (plus coloré et interactif) :
+
+```bash
+# Installer htop
+sudo dnf install htop
+
+# Lancer
+htop
+```
+
+`htop` offre :
+- Des barres de progression pour chaque CPU
+- Une vue arborescente des processus
+- Des couleurs pour différencier les types d'utilisation
+- Plus de raccourcis interactifs
+
+---
+
+## Résumé
+
+| Commande | Utilité principale |
+|----------|-------------------|
+| `top` | Surveillance en temps réel de l'utilisation des ressources et des processus |
+| `htop` | Version améliorée et plus intuitive de top |
+| `systemctl list-units` | Gestion et état des services systemd |
+| `systemd-cgtop` | Surveillance des groupes de contrôle (cgroups) |
+
+---
+
+Souhaitez-vous que je vous aide à interpréter un résultat spécifique de `top` ou à diagnostiquer un problème de performance particulier sur votre CentOS 9 ?

@@ -8,7 +8,8 @@ Cette commande liste **toutes** les unités systemd présentes sur votre systèm
 - **échec** (en erreur)
 - **masquées** (désactivées volontairement)
 
-Le `--all` (ou `-a`) est crucial car il affiche **aussi les unités qui ne sont pas chargées ou qui sont inactives**, contrairement à `systemctl list-units` seul qui ne montre que les unités actives.
+Le `--all` (ou `-a`) est crucial car il affiche **aussi les unités qui ne sont pas chargées ou qui sont inactives**, contrairement à `systemctl list-units`
+ seul qui ne montre que les unités actives.
 
 ---
 

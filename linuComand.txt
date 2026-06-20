@@ -597,11 +597,35 @@ systemctl list-units -all (permet d'afficher tout les processus en cours avec pl
 
         *DESCRIPTION : donne une description precise de la fonction du service.
 
+pour ajouter un nouveau service il faut aller sur /etc/systemd/system/ et cree le fichier corespondant au nouveau service avec touch en le nom nomdeservice.service et
+faire un systemctl restart
 
+-ps : affiche tout les processus qui sont en cour d'execution et aussi les utilisateur qui les utilisent
 
-ps
+ps (seul affiche quel utilisateur utilise quel console et depuis quand)
 
-top
+ps -e (montrent tout les proceussus en cour d'execution)
+
+ps aux (affiche les processus en format tableau BSD)
+
+ps -ef(affiche dans un tres bon format tout les processus en cour, tres recomande a utiliser)
+
+ps -u username (affiche ce qu'est entrein d'utiliser l'utilisateur en question comme processus)
+
+-top : est un systeme interactive en temp reel , il permet de voir la consomation des ressources materiel de la part des processus et de
+les arreter si il depassent un seuil normal au dela 80% pour le processeur par exemple ou si la memoire est sature.
+ladifference avec "ps" c'est que "ps" est une commande instantane pour voir un temp t du precsessus afin d'analyser l'etat ou d'en tire le PID.
+
+top (permet d'afficher tout les proceussus en cour avec des donnes precise en mode moniteur interactive->lier le fichier commande top.txt)
+
+top -u username (affiche les processus utilise par l'utilisateur)
+
+top *apres taper c* (affiche le chemin absolue de la commande ou processus)
+
+top *taper k apres taper le PID et entre* (pour tuer le processus)
+
+top *tapper P ou M* (pour trier les processus selon l'utilisation du processeur ou la memoire)
+
 
 kill
 

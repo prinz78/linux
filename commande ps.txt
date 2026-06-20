@@ -1,0 +1,109 @@
+Absolument ! Je vais vous expliquer en détail la commande `ps` sous CentOS 9.
+
+---
+
+## Que fait la commande `ps` ?
+
+`ps` (pour **Process Status**) est une commande qui affiche un **instantané** des processus actifs sur votre système . Elle vous donne un état précis de ce qui tourne à un instant T. C'est l'outil de base pour inspecter les processus en cours.
+
+---
+
+## Que retourne-t-elle ? (exemples concrets)
+
+### 1. Sans option : l'essentiel
+
+Si vous tapez `ps` seul, elle affiche uniquement les processus **liés à votre session terminal actuelle**  :
+
+```bash
+$ ps
+  PID TTY          TIME CMD
+10395 pts/1    00:00:00 bash
+13218 pts/1    00:00:00 ps
+```
+
+Le résultat montre deux processus : votre interpréteur de commandes (`bash`) et la commande `ps` elle-même . Pour chaque processus, on trouve :
+- **PID** : son identifiant unique .
+- **TTY** : le terminal auquel il est associé .
+- **TIME** : le temps CPU qu'il a utilisé .
+- **CMD** : la commande qui l'a lancé .
+
+### 2. Les commandes incontournables : `ps aux` et `ps -ef`
+
+Pour une vue complète de tout le système, deux syntaxes sont principalement utilisées  :
+
+**A. `ps aux` (style BSD)**
+```bash
+$ ps aux
+USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root           1  0.0  0.2 168772 11128 ?        Ss   09:59   0:22 /usr/lib/systemd/systemd
+demo         6350  0.0  0.1 224108  5664 pts/2    Ss   15:05   0:00 bash
+demo         9873  0.0  0.1 233416  6280 pts/1    R+   15:08   0:00 ps aux
+```
+
+Cette syntaxe est très courante et donne des informations détaillées comme l'utilisateur, l'utilisation CPU, la mémoire, etc. .
+
+**B. `ps -ef` (style System V)**
+```bash
+$ ps -ef
+UID          PID    PPID  C STIME TTY          TIME CMD
+root           1       0  0 09:59 ?        00:00:22 /usr/lib/systemd/systemd
+demo         6350    6339  0 15:05 pts/2    00:00:00 bash
+demo         9873    6350  0 15:08 pts/1    00:00:00 ps -ef
+```
+
+Elle affiche aussi tous les processus, dans un format souvent préféré pour sa clarté et sa vue hiérarchique . On y voit notamment le **PPID** (Parent PID) .
+
+---
+
+## Les options clés pour maîtriser `ps`
+
+Voici un tableau pour résumer les options les plus utiles  :
+
+| Option | Rôle |
+| :--- | :--- |
+| `a` (BSD) | Affiche les processus de **tous les utilisateurs** . |
+| `u` (BSD) | Format détaillé avec l'utilisateur, l'utilisation CPU et mémoire . |
+| `x` (BSD) | Inclut les processus **sans terminal**, comme les services système . |
+| `-e` (SysV) | Sélectionne **tous** les processus (équivaut à `-A`) . |
+| `-f` (SysV) | Format complet, affiche plus de colonnes comme le PPID . |
+| `-u` (SysV) | Affiche les processus d'**un utilisateur** spécifique . |
+| `-p` (SysV) | Filtre par **PID** pour voir un processus précis . |
+| `-C` (SysV) | Filtre par le **nom de la commande** . |
+| `-H` (SysV) | Affiche les processus en **arborescence** (père/enfants) . |
+
+---
+
+## La colonne STAT (État du processus)
+
+Dans un affichage `ps aux`, la colonne **STAT** vous donne l'état du processus . Voici les plus importants :
+
+| Code | Signification |
+| :--- | :--- |
+| **R** | **Running** (en cours d'exécution)  |
+| **S** | **Sleeping** (en sommeil, en attente)  |
+| **D** | Sommeil non interruptible (attente I/O disque)  |
+| **T** | **Stopped** (arrêté)  |
+| **Z** | **Zombie** (terminé, mais pas nettoyé)  |
+| **s** | Contient des sous-processus (est un chef de session)  |
+| **+** | Processus en **premier plan** (foreground)  |
+
+---
+
+## Bon à savoir sous CentOS 9
+
+- **Syntaxes multiples** : `ps` supporte différents styles d'options (UNIX, BSD, GNU), ce qui le rend très flexible mais parfois déroutant .
+- **Attention à `ps -aux`** : sur CentOS, `ps -aux` (avec un tiret) peut avoir un comportement différent de `ps aux` (sans tiret) et afficher une alerte . La version standard est `ps aux`.
+
+---
+
+## En résumé : `ps` vs `top`
+
+| Aspect | `ps` | `top` |
+| :--- | :--- | :--- |
+| **Nature** | Instantané à un moment T  | Vue dynamique en temps réel  |
+| **Utilité** | Analyser l'état, trouver un PID | Surveiller en continu les ressources |
+| **Interaction** | Non interactif (commande simple) | Interactif, avec des tris et actions |
+
+---
+
+Souhaitez-vous que je vous aide à analyser une sortie de `ps` ou à trouver un processus particulier sur votre système ?
