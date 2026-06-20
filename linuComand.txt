@@ -612,6 +612,8 @@ ps -ef(affiche dans un tres bon format tout les processus en cour, tres recomand
 
 ps -u username (affiche ce qu'est entrein d'utiliser l'utilisateur en question comme processus)
 
+
+
 -top : est un systeme interactive en temp reel , il permet de voir la consomation des ressources materiel de la part des processus et de
 les arreter si il depassent un seuil normal au dela 80% pour le processeur par exemple ou si la memoire est sature.
 ladifference avec "ps" c'est que "ps" est une commande instantane pour voir un temp t du precsessus afin d'analyser l'etat ou d'en tire le PID.
@@ -627,7 +629,27 @@ top *taper k apres taper le PID et entre* (pour tuer le processus)
 top *tapper P ou M* (pour trier les processus selon l'utilisation du processeur ou la memoire)
 
 
-kill
+-kill : est utilise pour mettre fin a un processus de facon manuel en utilisant des signaux en forme de nombre
+
+kill -l (permet d'avoir la liste des signaux)
+
+kill PID_processus (tue le processus sans signale)
+
+kill -1 PID_processus (tue le processus et le redemare)
+
+kill -2 PID_Processus (arrete le processus u clavier come ctrl-c)
+
+kill -9 PID_Processus (tue le processus de facon forcee)
+
+kill -15 PID_Processus (tue le processus de facon tres safe)
+
+killall PID_Processus (tu le processus et ces threads"enfants")
+
+pkill nom_du_Processus (permet de tuer le processus par le nom et non par le PID)
+
+
+
+
 
 crontab
 
