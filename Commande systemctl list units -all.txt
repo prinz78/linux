@@ -1,0 +1,110 @@
+Absolument ! Je vais vous expliquer cette commande en détail.
+
+## Que fait `systemctl list-units --all` ?
+
+Cette commande liste **toutes** les unités systemd présentes sur votre système CentOS 9, qu'elles soient :
+- **actives** (en cours d'exécution)
+- **inactives** (arrêtées)
+- **échec** (en erreur)
+- **masquées** (désactivées volontairement)
+
+Le `--all` (ou `-a`) est crucial car il affiche **aussi les unités qui ne sont pas chargées ou qui sont inactives**, contrairement à `systemctl list-units` seul qui ne montre que les unités actives.
+
+---
+
+## Que retourne-t-elle ?
+
+La commande retourne un tableau avec **5 colonnes principales** :
+
+| Colonne | Description |
+|---------|-------------|
+| **UNIT** | Nom de l'unité (ex: `sshd.service`, `network.target`) |
+| **LOAD** | État de chargement : `loaded` (chargé), `not-found`, `error`, `masked` |
+| **ACTIVE** | État actif : `active` (en cours), `inactive` (arrêté), `failed` (en échec) |
+| **SUB** | Sous-état : `running`, `exited`, `waiting`, `dead`, etc. |
+| **DESCRIPTION** | Description lisible de l'unité |
+
+### Exemple de sortie :
+
+```
+UNIT                        LOAD      ACTIVE   SUB     DESCRIPTION
+proc-sys-fs-binfmt_misc.automount loaded    active   running   Arbitrary Executable File Formats File System Automount Point
+dev-disk-by\x2duuid-xxx.device loaded    active   plugged   /dev/disk/by-uuid/xxx
+systemd-journald.service     loaded    active   running   Journal Service
+sshd.service                 loaded    active   running   OpenSSH server daemon
+cups.service                 loaded    inactive dead      CUPS Scheduler
+chronyd.service              loaded    active   running   NTP client/server
+```
+
+---
+
+## Les types d'unités affichées
+
+Systemd gère plusieurs types d'unités, vous verrez :
+
+- **`.service`** : services (démons, applications)
+- **`.socket`** : sockets d'écoute
+- **`.target`** : groupes d'unités (ex: `multi-user.target`)
+- **`.mount`** : points de montage
+- **`.timer`** : temporisateurs (remplacent cron)
+- **`.device`** : périphériques matériels
+- **`.path`** : chemins de fichiers surveillés
+
+---
+
+## Options utiles à combiner
+
+```bash
+# Filtrer par type d'unité
+systemctl list-units --all --type=service
+
+# Afficher uniquement les unités en échec
+systemctl list-units --all --state=failed
+
+# Afficher uniquement les unités actives
+systemctl list-units --state=running
+
+# Compter le nombre total d'unités
+systemctl list-units --all | wc -l
+
+# Afficher avec plus de détails
+systemctl list-units --all --full  # pas de troncature des noms
+```
+
+---
+
+## Interprétation des états
+
+| État LOAD | Signification |
+|-----------|---------------|
+| `loaded` | L'unité est correctement chargée en mémoire |
+| `not-found` | Le fichier unité n'existe pas |
+| `error` | Erreur lors du chargement |
+| `masked` | L'unité est masquée (désactivée) |
+
+| État ACTIVE | Signification |
+|-------------|---------------|
+| `active` | L'unité fonctionne |
+| `inactive` | L'unité est arrêtée |
+| `failed` | L'unité a échoué (état d'erreur) |
+
+---
+
+## Pourquoi c'est utile ?
+
+1. **Diagnostic** : voir rapidement quels services tournent ou sont en échec
+2. **Audit** : connaître tous les services installés sur le système
+3. **Optimisation** : identifier les services inutiles à désactiver
+4. **Débogage** : repérer les unités en erreur avec `--state=failed`
+
+---
+
+## Bon à savoir sous CentOS 9
+
+CentOS 9 utilise systemd 250+ donc vous avez aussi :
+- Des couleurs dans la sortie (vert = actif, rouge = échec, etc.)
+- La possibilité d'utiliser `systemctl list-unit-files` pour voir les fichiers d'unités sur le disque (indépendamment de leur état chargé)
+
+---
+
+Souhaitez-vous que je vous aide à analyser un résultat particulier ou à filtrer cette commande pour un besoin spécifique ?

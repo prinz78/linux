@@ -567,14 +567,37 @@ bc (permet de faire des calcules)
 -process : quand un service est lance il demare un ou plusieurs processus comme la carte reseau par exemple qui lance plusieurs protocoles pour communiquer. On reconait
 les processus par leur ID.
 
--Daemon : reste generalement en arriere plan discretement et coute les entrees sortie des trafics des process.
+-Daemon : reste generalement en arriere plan discretement et ecoute les entrees sortie des trafics des process.
 
--threads : ils son genere par les processus par exemple : pour le NFS(Network File Systeme) permet aux utilisateur qui se conaictent de facon distante de partager les repertoires
+-threads : ils sont genere par les processus par exemple : pour le NFS(Network File Systeme) permet aux utilisateur qui se conaictent de facon distante de partager les repertoires
 et les fichiers comme si ils etaient sur leur propre machine, a cahque fois qu'il y a ce partage le process cree un thread pour chaque machine
 
 -job or workers : execute de facon programe un service ou un process a un moment definis par l'utilisateur.
 
-systemctl (pour )
+-systemctl (est un outils qui permet de controller les services systemes):
+
+systemctl start | stop | status servicename.service (permet de demarer, arreter, d'afficher le status actuel
+d'un service systeme qui est deja charge au demarrage du kernel)
+
+systemctl enable | disable servicename.service (permet d'activer ou desactiver un service systeme pour qu'il demare de facon definitive
+avec le kernel ou au contraire le desactiver de facon definitive)
+
+sytemctl restart | reload servicename.service (entre les deux options il n y a pas une grande difference car ca permet de recharger le processus dans la memoire si on a
+fait de modifications au niveau du service )
+
+systemctl list-units -all (permet d'afficher tout les processus en cours avec plus de precision, elle retourne 4 colones afiiche ci-dessou)
+
+        *UNIT : the systemd unit name.
+
+        *LOAD : indique si la configuration de l'unité a été transmise par systemd. La configuration des unités localisées est conservée en mémoire.
+
+        *ACTIVE : un resume sur l'unite si elle est active ou pas.C'est généralement une méthode assez simple pour déterminer si l'unité a démarré correctement ou non.
+
+        *SUB : c'est le niveau le plus bas qui montre des information running, exited,...ect.
+
+        *DESCRIPTION : donne une description precise de la fonction du service.
+
+
 
 ps
 
