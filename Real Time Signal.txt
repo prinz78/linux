@@ -1,0 +1,195 @@
+Les signaux temps réel (Real-Time signals) sont une fonctionnalité avancée de Linux, conçue pour offrir une communication inter-processus plus fiable et plus riche que les signaux standards.
+
+Voici une explication détaillée, spécialement dans le contexte de CentOS 9, avec des exemples concrets en C.
+
+### 🔍 Que sont les signaux temps réel ?
+
+Pour bien comprendre leur utilité, il faut d'abord connaître leurs principales caractéristiques qui les distinguent des signaux standards (de 1 à 31) .
+
+- **File d'attente (Queuing)** : Un signal standard qui est envoyé plusieurs fois avant d'être traité ne sera "vu" qu'une seule fois par le processus destinataire. Les signaux temps réel, eux, sont mis en file d'attente. Chaque signal envoyé sera bien délivré, aucun n'est perdu. C'est essentiel dans les systèmes où chaque événement compte .
+- **Transport de données (Payload)** : Avec la fonction `sigqueue()`, vous pouvez envoyer un signal temps réel accompagné d'une valeur (un entier ou un pointeur). Cela permet de transmettre des informations supplémentaires, comme un ID de tâche, une séquence numérique, ou l'adresse d'une structure de données .
+- **Priorité** : Les signaux temps réel ont une priorité définie par leur numéro. Le signal `SIGRTMIN` est le plus prioritaire, et `SIGRTMAX` le moins prioritaire . Si plusieurs signaux sont en attente, le plus petit numéro sera traité en premier .
+
+### 💻 Exemples Concrets en C sur CentOS 9
+
+Voici comment les utiliser concrètement dans un programme. **Note :** Ces exemples utilisent les appels système POSIX, parfaitement compatibles avec CentOS 9.
+
+#### 1. Comment envoyer un signal avec des données (`sigqueue`)
+
+Cet exemple montre un processus père qui envoie un signal `SIGRTMIN+1` à son fils avec un entier en guise de donnée.
+
+```c
+// Fichier : sender.c
+#include <stdio.h>
+#include <signal.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <stdlib.h>
+#include <errno.h>
+
+int main() {
+    pid_t pid = fork(); // Créer un processus fils
+
+    if (pid == -1) {
+        perror("fork");
+        exit(EXIT_FAILURE);
+    }
+
+    if (pid == 0) {
+        // --- Processus Fils ---
+        // 1. On prépare la structure pour gérer le signal
+        struct sigaction sa;
+        sa.sa_sigaction = handle_signal; // Notre fonction de gestion
+        sa.sa_flags = SA_SIGINFO;        // Indispensable pour recevoir les données
+        sigemptyset(&sa.sa_mask);
+
+        // 2. On associe notre gestionnaire au signal SIGRTMIN+1
+        if (sigaction(SIGRTMIN + 1, &sa, NULL) == -1) {
+            perror("sigaction");
+            exit(EXIT_FAILURE);
+        }
+
+        printf("Fils (PID: %d) en attente d'un signal...\n", getpid());
+        while(1) {
+            sleep(1); // Le processus fils attend
+        }
+    } else {
+        // --- Processus Père ---
+        sleep(1); // On laisse le fils s'installer
+
+        // 3. On prépare la donnée à envoyer (un entier)
+        union sigval value;
+        value.sival_int = 42; // On envoie l'entier 42
+
+        // 4. On envoie le signal SIGRTMIN+1 au processus fils
+        printf("Père (PID: %d) envoie SIGRTMIN+1 au fils %d avec la valeur %d\n",
+               getpid(), pid, value.sival_int);
+
+        if (sigqueue(pid, SIGRTMIN + 1, value) == -1) {
+            perror("sigqueue");
+            exit(EXIT_FAILURE);
+        }
+
+        // On attend un peu pour que le fils traite le signal puis on le termine
+        sleep(2);
+        kill(pid, SIGTERM);
+    }
+    return 0;
+}
+
+// Fonction de gestion du signal dans le fils
+void handle_signal(int sig, siginfo_t *info, void *context) {
+    // On récupère la donnée envoyée
+    int received_value = info->si_value.sival_int;
+    printf("Fils : Signal %d reçu avec la valeur : %d\n", sig, received_value);
+}
+```
+Ce code montre le mécanisme complet pour échanger des données entre processus de manière fiable .
+
+#### 2. Un cas d'usage métier : Le Chronomètre Run/Walk
+
+Cet exemple est tiré d'un ouvrage de référence sur la programmation système. Il s'agit d'un chronomètre qui alterne entre des périodes de "Course" et de "Marche", en s'appuyant sur un minuteur POSIX qui génère des signaux temps réel .
+
+```c
+// Fichier : timer_app.c
+// Extrait et adapté du concept du "Run/Walk Timer"
+
+#include <stdio.h>
+#include <signal.h>
+#include <time.h>
+#include <unistd.h>
+#include <string.h>
+#include <stdlib.h>
+#include <assert.h>
+
+// Structure pour notre contexte applicatif
+typedef struct {
+    timer_t timerid;      // ID du minuteur
+    int run_time;         // Durée de la course en secondes
+    int walk_time;        // Durée de la marche en secondes
+    int is_run_phase;     // 1 si phase de course, 0 si phase de marche
+    struct itimerspec spec; // Structure pour configurer le minuteur
+} RunWalkTimer;
+
+// Fonction de gestion du signal (le gestionnaire du minuteur)
+static void its_time(int sig, siginfo_t *info, void *context) {
+    // info->si_value.sival_ptr pointe vers notre structure RunWalkTimer
+    RunWalkTimer *timer = (RunWalkTimer *)info->si_value.sival_ptr;
+
+    if (timer->is_run_phase) {
+        printf("BZZZ! Phase de COURSE terminée. Passez à la MARCHE (%d s)\n", timer->walk_time);
+        // Reconfigurer le minuteur pour la marche
+        timer->spec.it_value.tv_sec = timer->walk_time;
+        timer->spec.it_value.tv_nsec = 0;
+        timer->is_run_phase = 0;
+    } else {
+        printf("BZZZ! Phase de MARCHE terminée. Passez à la COURSE (%d s)\n", timer->run_time);
+        // Reconfigurer le minuteur pour la course
+        timer->spec.it_value.tv_sec = timer->run_time;
+        timer->spec.it_value.tv_nsec = 0;
+        timer->is_run_phase = 1;
+    }
+
+    // On réarme le minuteur pour la prochaine phase
+    if (timer_settime(timer->timerid, 0, &timer->spec, NULL) == -1) {
+        perror("timer_settime");
+    }
+}
+
+int main() {
+    RunWalkTimer my_timer;
+    struct sigaction act;
+    struct sigevent sev;
+
+    // 1. Initialiser les paramètres du minuteur
+    my_timer.run_time = 5;  // Courir 5 secondes
+    my_timer.walk_time = 2; // Marcher 2 secondes
+    my_timer.is_run_phase = 1;
+
+    // 2. Configurer le gestionnaire de signal pour SIGRTMIN
+    act.sa_sigaction = its_time;
+    act.sa_flags = SA_SIGINFO; // Pour recevoir le contexte
+    sigfillset(&act.sa_mask);  // Bloquer les autres signaux pendant le handler
+    if (sigaction(SIGRTMIN, &act, NULL) == -1) {
+        perror("sigaction");
+        exit(EXIT_FAILURE);
+    }
+
+    // 3. Créer le minuteur POSIX
+    sev.sigev_notify = SIGEV_SIGNAL;
+    sev.sigev_signo = SIGRTMIN;
+    // On passe l'adresse de notre structure au gestionnaire de signal
+    sev.sigev_value.sival_ptr = &my_timer;
+    if (timer_create(CLOCK_REALTIME, &sev, &my_timer.timerid) == -1) {
+        perror("timer_create");
+        exit(EXIT_FAILURE);
+    }
+
+    // 4. Démarrer le minuteur avec la première phase (Course)
+    my_timer.spec.it_value.tv_sec = my_timer.run_time;
+    my_timer.spec.it_value.tv_nsec = 0;
+    // Ceci est un minuteur "one-shot". Il sera réarmé depuis le gestionnaire.
+    my_timer.spec.it_interval.tv_sec = 0;
+    my_timer.spec.it_interval.tv_nsec = 0;
+
+    if (timer_settime(my_timer.timerid, 0, &my_timer.spec, NULL) == -1) {
+        perror("timer_settime");
+        exit(EXIT_FAILURE);
+    }
+
+    printf("Chronomètre démarré ! Allez, COURREZ !\n");
+    // On laisse le programme tourner
+    while(1) {
+        sleep(1);
+    }
+
+    return 0;
+}
+```
+
+Ce deuxième exemple illustre parfaitement un scénario professionnel : un minuteur applicatif qui utilise un signal temps réel. Il montre comment le signal peut transporter un pointeur (`sival_ptr`) vers une structure de données, permettant au gestionnaire de signal de connaître et de modifier l'état de l'application (alterner les phases) sans avoir besoin de variables globales .
+
+### ⚙️ En Résumé
+
+- **Les signaux standards** sont parfaits pour les notifications simples (arrêt, interruption, etc.).
+- **Les signaux temps réel** sont l'outil de choix lorsque vous avez besoin d'une communication inter-processus **fiable** (pas de perte de messages) et **riche** (avec données), typique des applications de temps réel, de contrôle ou de monitoring.

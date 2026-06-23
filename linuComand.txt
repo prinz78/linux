@@ -608,11 +608,11 @@ ps -e (montrent tout les proceussus en cour d'execution)
 
 ps aux (affiche les processus en format tableau BSD)
 
-ps -ef(affiche dans un tres bon format tout les processus en cour, tres recomande a utiliser)
+ps -ef (affiche dans un tres bon format tout les processus en cour, tres recomande a utiliser)
 
 ps -u username (affiche ce qu'est entrein d'utiliser l'utilisateur en question comme processus)
 
-
+ps -ef | grep nom_du_processus ( important!!!! permet d'avoir le PID du processus )
 
 -top : est un systeme interactive en temp reel , il permet de voir la consomation des ressources materiel de la part des processus et de
 les arreter si il depassent un seuil normal au dela 80% pour le processeur par exemple ou si la memoire est sature.
@@ -629,7 +629,11 @@ top *taper k apres taper le PID et entre* (pour tuer le processus)
 top *tapper P ou M* (pour trier les processus selon l'utilisation du processeur ou la memoire)
 
 
--kill : est utilise pour mettre fin a un processus de facon manuel en utilisant des signaux en forme de nombre
+-kill : est utilise pour mettre fin a un processus de facon manuel en utilisant des signaux en forme de nombre ou de communiquer avec le processus sans l'interompre, il y a deux sortes de signaux :
+
+* signaux standard : ce sont des signaux qui permetent d'interompre le processus, de le terminer en sauvegardant les infos, de le tuer de manierre force, de le stopeer temporairement et de le reprendre par la suite.
+
+pour les rendre plus accecible on utilise des numeros comme suit :
 
 kill -l (permet d'avoir la liste des signaux)
 
@@ -648,12 +652,66 @@ killall PID_Processus (tu le processus et ces threads"enfants")
 pkill nom_du_Processus (permet de tuer le processus par le nom et non par le PID)
 
 
+--> ou d'utiliser ou de facon semantic :
+
+kill -SIGINT PID (interonpt le processus de maniere non force)
+
+kill -SIGTERM PID ( arrete le processus en sauvegardant les informations de facon safe)
+        *** par la suite on affiche les fichiers caches avec "ls -a"
+        *** on le restitue avec "vim -r nom_du_fichier_originel"
+
+kill -SIGKILL PID (tue le processus de facon forcee)
+
+kill -SIGSTOP PID (met le processus en pause sans le decharge de la memoire)
+
+kill -SIGCONT PID (re active le processus mit en pause)
+        *** par la suite on rssort le fichier de l'arriere plan avec la commande "fg" for groung
+
+kill -SIGSEGV PID (arrete le processus qui essaye d'acceder a l'allocation memoire de facon invalide)
+
+* signaux en temp reel(Real Time Signal) : ces types de signaux permetent de communiquer avec le processus sans l'interopre, les plus utilise sont :
+
+kill -SIGRTMIN PID (ouvre un canal de communication avec le processus)
+
+kill -SIGRTMAX PID (termine la canal de communication avec le processus)
+
+kill <intermediate_signale> (nous verrons ca par la suite)
 
 
 
-crontab
+-crontab : permet de cree des taches automatises :
 
-at.
+crontab -e (permet d'editer le fichier crontab)
+
+crontab -l (liste les entrees de crontab)
+
+crontab -r (efface les entrees)
+
+crond (c'est le service/daemon qui est charge dans la memoire, avec "sytemctl" on peut l'activer ou le desactiver)
+
+    * dans crontab on retrouve les colonnes suivantes :
+
+    minutes(0 - 59 ou *) hour(0 - 23 ou *) day of the month (1 - 31 ou *) month (1 - 12 ou *) day of the week(0 - 6 ou *) <command to execute>
+
+
+
+at : permet de cree des taches automatise valable une seul fois contrairement a crontab, un fois la date valide at rentre en mode interactif
+ pour en sortir on tape ctrl+d :
+
+at HH:MM:PM (ajoute une tache automatise)
+
+atq (liste la queu des tache prevus)
+
+atrm (efface les entrees par numero)
+
+atd (le nom du processus/daemon qui est actif)
+
+    *autres fonctionalite de datation avec at :
+    at 2:45 AM 101621
+    at 4PM + 4 days
+    at now +5 hoursw
+    at 8:00 AM Sat
+    at 10:00 AM next mount
 
 
 
