@@ -541,7 +541,7 @@ Il ya plusieurs logiciel qui font du Repertory Managing :
 
 
 
-################### Sytem utility commands : permet d'avoir des informations sur les utilisateurs etle systeme et aussi
+################### Sytem utility commands : permet d'avoir des informations sur les utilisateurs et le systeme et aussi
 d'utiliser des outils comme une calculatrice qui peuvent aider l'adminstrateur.
 
 date (permet d'avoir la date avec plus de precision)
@@ -694,8 +694,28 @@ crond (c'est le service/daemon qui est charge dans la memoire, avec "sytemctl" o
     minutes(0 - 59 ou *) hour(0 - 23 ou *) day of the month (1 - 31 ou *) month (1 - 12 ou *) day of the week(0 - 6 ou *) <command to execute>
 
 
+- il ya une possibilite de lancer les jobs de facon chaque heure, journaliere. semaine, ou hebdomadaire juste en metant le scypte voulus dans le repertoire coresspandant :
+/etc/cron.hourly/
+/etc/cron.daily/
+/etc/cron.weekly/
+/etc/cron.monthly/
 
-at : permet de cree des taches automatise valable une seul fois contrairement a crontab, un fois la date valide at rentre en mode interactif
+ls -l | grep cron(permet d'avoir tout les repertoires gerer par le service cron)
+
+- pour voir le temp exacte de cahque execution de scrypte dans ces repertoire :
+
+cat /etc/anacrontab
+
+- l'heure d'execution des taches journaliere n'apparaissent pas sous le repertoire anacrontab, pour les voir il faut :
+
+cat /etc/cron.d/0hourly
+
+- pour verifier le log du fichier en question et voir si la tache s'est bien deroule :
+
+sudo cat /var/log/mise_a_jour_hebdomadaire.log
+
+
+at : permet de cree des taches automatise valable une seul fois contrairement a crontab, une fois la date valide at rentre en mode interactif
  pour en sortir on tape ctrl+d :
 
 at HH:MM:PM (ajoute une tache automatise)
