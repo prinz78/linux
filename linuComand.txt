@@ -541,7 +541,7 @@ Il ya plusieurs logiciel qui font du Repertory Managing :
 
 
 
-################### Sytem utility commands : permet d'avoir des informations sur les utilisateurs et le systeme et aussi
+################### Sytem utility commands : permet d'avoir des informations sur les utilisateurs etle systeme et aussi
 d'utiliser des outils comme une calculatrice qui peuvent aider l'adminstrateur.
 
 date (permet d'avoir la date avec plus de precision)
@@ -693,7 +693,6 @@ crond (c'est le service/daemon qui est charge dans la memoire, avec "sytemctl" o
 
     minutes(0 - 59 ou *) hour(0 - 23 ou *) day of the month (1 - 31 ou *) month (1 - 12 ou *) day of the week(0 - 6 ou *) <command to execute>
 
-
 - il ya une possibilite de lancer les jobs de facon chaque heure, journaliere. semaine, ou hebdomadaire juste en metant le scypte voulus dans le repertoire coresspandant :
 /etc/cron.hourly/
 /etc/cron.daily/
@@ -710,12 +709,13 @@ cat /etc/anacrontab
 
 cat /etc/cron.d/0hourly
 
-- pour verifier le log du fichier en question et voir si la tache s'est bien deroule :
+- pour verifier le log du fichier en question et voir si la tache s'est bien deroulé :
 
 sudo cat /var/log/mise_a_jour_hebdomadaire.log
 
 
-at : permet de cree des taches automatise valable une seul fois contrairement a crontab, une fois la date valide at rentre en mode interactif
+
+at : permet de cree des taches automatise valable une seul fois contrairement a crontab, un fois la date valide at rentre en mode interactif
  pour en sortir on tape ctrl+d :
 
 at HH:MM:PM (ajoute une tache automatise)
@@ -733,9 +733,66 @@ atd (le nom du processus/daemon qui est actif)
     at 8:00 AM Sat
     at 10:00 AM next mount
 
+## Process Management : process management concerne tou ce qui ce rattache au démarage, arret, la mise en en avant plan ou en arrie plan ou le classer dans liste des priorités.
+les commandes sont les suivantes :
+
+Ctrl-z (permet juste d'arreter le process en avant plan, et pas de l'annuler)
+
+jobs (permet de liste l'etat des processus)
+
+bg ( si la commande jobs est suivis de la commande, elle permet de reprendre le processus stopé en arriere plan)
+
+fg (permet de remetre le processus en avant plan)
+
+nohup process & (permet de continuer a executer le processus même si la console est fermé, crée aussi un fichier log nohup.output)
+
+nohup process & > /dev/null/ 2>&1 & (permet de continuer l'execution du processus meme si la console est fermö, et ne cree pas le fichier log,
+car tout est redirigé vers le repertoire des fichier temporaire)
+
+nice -n numero_de_priorité (permet de priorisé un processus par à port a d'autres, jusqu'à 20 processus plus le nombre est bas plus le processus est prioritaire)
 
 
+## System Monitoring Command : pour pouvoir faire du monitoring ce qui est indispenssable  pour un adminstrateur systeme, il faut apprendre par coeur les commandes suivante, car elles
 
+permetent de bien visuealiser l'etat du materiel et des processes:
+
+top (permet d'afficher un moniteur qui renvois des informations complete en liste de ce qui est utiliser par quel utilisateur)
+
+df -h (donne les partitions des diques durs ainsi que leur mapping et utilisation)
+
+dmesg | more (c'est une commande qui permet d'afficher le log systeme pour avoir un raport sur les erreur systemes, les allertes, ..ect )
+
+iostat -cx 2 (La commande iostat (pour input/output statistics) est un outil système qui permet de surveiller les performances des entrées/sorties (I/O) et
+l'utilisation du processeur sur une machine Linux. Elle est notamment utile pour identifier les goulets d'étranglement au niveau des disques.) :
+
+Rapport CPU (extrait de iostat -c) :
+
+    %user : Utilisation du CPU par les applications (niveau utilisateur).
+
+    %system : Utilisation du CPU par le système (niveau noyau).
+
+    %iowait : Pourcentage de temps où le CPU était inactif mais avait une demande d'I/O disque en attente. Une valeur élevée indique souvent un goulot d'étranglement du disque.
+
+Rapport Disque (avec l'option -x pour les détails) :
+
+    %util : Pourcentage de temps où le périphérique était occupé à traiter des demandes. Si ce taux reste proche de 100%, le disque est saturé.
+
+    await : Temps moyen (en millisecondes) pour qu'une requête I/O soit servie. Une valeur élevée indique une lenteur du disque.
+
+    avgqu-sz : Taille moyenne de la file d'attente des requêtes. Une file d'attente constamment longue suggère que le disque a du mal à suivre le rythme.
+
+ip route | column -t (permet d'avoir tout les infos sur la carte reseau et ces references)
+
+ss | more (montre tout les ports et les processus utilisé et associé par la carte reseau)
+
+free (retourne la memoire physique "disque dur" et la memoire swap "memoire de pagination")
+
+
+- Ceci est le reppertoire /proc ou sont stoqués toutes les log materiel, dans cet exemple nous allon afficher celui du processeur  et celui de la memoire :
+
+cat /proc/cpuinfo | more (affiche les infos du processeur)
+
+cat /proc/meminfo | more (affiche les infos sur la RAM)
 
 
 
