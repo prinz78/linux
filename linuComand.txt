@@ -794,6 +794,27 @@ cat /proc/cpuinfo | more (affiche les infos du processeur)
 
 cat /proc/meminfo | more (affiche les infos sur la RAM)
 
+- Pour avoir les fichiers Log necessaire et etre bien infromè sur le comportement du systeme on utilise les log sous le repertoire /var/log/, les principaux fichiers
+
+qu'il faut observé sont :
+
+cat /var/log/messages | more ou pour rechercher quelque chose de specifique grep -i error messages (la premierre chose que doit fair un administrateur
+
+systeme en cas d'erreur ou de panne systeme est de cpnssulter le fichier lo "messages")
+
+cat /var/log/boot.log | more (pour voir la sequence de boot depuis le dernier dematage)
+
+cd /var/log/chrony/ (c'est un répertoire essentiel pour garder une trace de l'activité du service NTP et résoudre les problèmes d'heure système.)
+
+cat /var/log/cron | more (Pour afficher un log sur tout les jobs executé et programmé)
+
+cat /var/log/dmesage | more (donne des informaztions sur le materiel )
+
+cat /var/log/mailog | more (permet de voir pourquoi les emails ne sont pas envoyer ou autre deffaut concernant l'envois et la reception d'email)
+
+cat /var/log/secure | more (toutes les informations sur la securite connexions et autres)
+
+
 
 
 

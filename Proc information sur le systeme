@@ -1,0 +1,50 @@
+Le répertoire `/proc/` sous CentOS 9 (et tout système Linux) est un système de fichiers virtuel, aussi appelé *procfs*. Il ne contient
+
+pas de fichiers réels stockés sur le disque dur, mais sert d'interface entre le noyau Linux et l'utilisateur.
+
+Il est principalement utilisé comme **centre d'information et de contrôle pour le noyau** et les processus en cours d'exécution.
+
+Voici ses deux grandes fonctions.
+
+### 🗂️ Informations sur le système
+
+Le répertoire `/proc/` contient des fichiers virtuels qui fournissent une vue instantanée de l'état du système. Leur taille est souvent affichée comme 0 octet, mais ils contiennent
+
+des données dynamiques générées à la demande par le noyau.
+
+Voici quelques fichiers importants pour l'administration système, accessibles avec des commandes comme `cat`, `less` ou `more` :
+
+| Fichier | Description | Utilisation exemple |
+| :--- | :--- | :--- |
+| `/proc/cpuinfo` | Informations détaillées sur le(s) processeur(s) (modèle, fréquence, etc.) | `cat /proc/cpuinfo` |
+| `/proc/meminfo` | Utilisation détaillée de la mémoire vive (RAM) et de la mémoire d'échange (swap) | `cat /proc/meminfo` |
+| `/proc/partitions` | Liste des partitions de disque détectées par le système. | `cat /proc/partitions` |
+| `/proc/interrupts` | Nombre d'interruptions (IRQ) par CPU. | `cat /proc/interrupts` |
+| `/proc/filesystems` | Liste des systèmes de fichiers supportés par le noyau. | `cat /proc/filesystems` |
+| `/proc/loadavg` | Charge moyenne du système (1, 5, 15 minutes) et nombre de processus. | `cat /proc/loadavg` |
+| `/proc/modules` | Liste des modules du noyau actuellement chargés. Similaire à la commande `lsmod`. | `cat /proc/modules` |
+
+### 📂 Informations sur les processus
+
+Chaque processus en cours d'exécution possède son propre sous-répertoire nommé par son **PID (Process ID)**. Par exemple, les informations du processus `init` (PID 1) se trouvent dans `/proc/1/`.
+
+Ces répertoires donnent un accès direct à l'état de chaque processus. Voici les fichiers les plus utiles :
+
+*   **`/proc/[PID]/cmdline`** : La commande complète qui a lancé le processus (avec ses arguments).
+*   **`/proc/[PID]/environ`** : Les variables d'environnement du processus.
+*   **`/proc/[PID]/fd/`** : Un répertoire contenant des liens symboliques vers tous les fichiers ouverts par le processus (descripteurs de fichiers). `0` est l'entrée standard (stdin), `1` la sortie
+standard (stdout), etc..
+*   **`/proc/[PID]/status`** : L'état du processus (en cours d'exécution, en attente, zombie...), son utilisation mémoire, son UID, GID, etc..
+*   **`/proc/[PID]/exe`** : Un lien symbolique pointant vers le fichier exécutable qui a lancé le processus.
+
+Un lien symbolique spécial, `/proc/self`, pointe toujours vers le répertoire du processus qui y accède, ce qui est très pratique pour qu'un programme puisse interroger ses propres informations.
+
+### ⚙️ Configuration dynamique du noyau (`/proc/sys/`)
+
+Contrairement à la plupart des fichiers en lecture seule, le sous-répertoire `/proc/sys/` permet de modifier certains paramètres du noyau à chaud, sans avoir à redémarrer la machine.
+
+Cette fonctionnalité est à manier avec précaution, car elle permet de changer des comportements fondamentaux du système (gestion de la mémoire, réseau, sécurité...). La commande `sysctl` est l'outil
+
+ standard pour interagir avec ces paramètres de manière plus sûre.
+
+En résumé, le répertoire `/proc/` est un espace de **transparence et d'interaction avec le noyau Linux**. Il est indispensable pour le diagnostic, la surveillance et l'optimisation de votre système CentOS 9.

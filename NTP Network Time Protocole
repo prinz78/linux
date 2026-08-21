@@ -1,0 +1,51 @@
+Le service NTP, pour **Network Time Protocol** (Protocole de Temps Réseau), est un service système essentiel dont le rôle
+
+est de **maintenir l'horloge de votre ordinateur parfaitement à l'heure** en la synchronisant en continu avec des sources de temps fiables sur internet .
+
+### 🎯 Pourquoi est-ce si important ?
+
+Avoir une heure système précise et synchronisée n'est pas qu'une question de commodité ; c'est un besoin fondamental pour le bon fonctionnement
+
+d'un système Linux, surtout dans un environnement professionnel :
+
+*   **Journaux (logs) cohérents** : En cas de panne ou d'intrusion, les journaux système (par exemple, dans `/var/log/`) permettent de retracer la chronologie
+
+des événements. Si l'heure des différentes machines n'est pas alignée, le diagnostic devient impossible .
+
+*   **Sécurité réseau** : De nombreux protocoles de sécurité, comme Kerberos, dépendent d'une heure système précise pour valider
+
+l'authenticité des requêtes et prévenir les attaques.
+
+*   **Fonctionnement des applications** : Dans les environnements en cluster ou les bases de données distribuées, une heure
+
+commune est vitale pour coordonner les actions et maintenir la cohérence des données .
+
+### ⚙️ Comment ça fonctionne ?
+
+Le fonctionnement de NTP est basé sur une hiérarchie et un mécanisme de calcul précis :
+
+*   **Hiérarchie (Strata)** : Le temps provient d'**horloges de référence** (comme des horloges atomiques ou des récepteurs GPS) qui constituent
+
+la **strate 0**. Ces sources sont inaccessibles au public. Elles servent de référence à des serveurs de **strate 1**, qui eux-mêmes synchronisent
+
+des serveurs de **strate 2**, et ainsi de suite .
+
+Un serveur public `pool.ntp.org` est généralement de strate 2 ou 3.
+
+*   **Calcul du décalage (Offset)** : Le service NTP (souvent `chronyd` sur CentOS 9) envoie régulièrement une requête à un serveur de temps.
+
+Il calcule le **décalage (offset)** entre l'heure de sa propre horloge et celle du serveur en tenant compte du temps de latence du réseau .
+
+### 🐧 Le service NTP dans CentOS 9 (chrony)
+
+Dans les distributions Linux modernes, et plus particulièrement sur CentOS 9, le service NTP est généralement assuré par un démon appelé `chronyd` . C'est ce service
+ qui :
+1.  Interroge les serveurs de temps configurés dans le fichier `/etc/chrony.conf`.
+
+2.  Ajuste l'heure du système de manière progressive et fluide (on parle de **slewing**) pour éviter les sauts brusques qui pourraient perturber les applications .
+
+3.  S'il est configuré pour cela, peut également servir de serveur de temps pour d'autres machines sur votre réseau local . Il écrit alors les traces de
+
+son activité dans le répertoire `/var/log/chrony/` que vous avez découvert.
+
+En résumé, le service NTP est le gardien de l'heure de votre système, assurant que tout fonctionne de manière cohérente et sécurisée.
