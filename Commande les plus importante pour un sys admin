@@ -1,0 +1,150 @@
+Voici une **checklist complète des commandes essentielles** pour un administrateur système Linux, organisée par catégories fonctionnelles. C'est le "couteau suisse" que tout admin doit maîtriser de A à Z.
+
+---
+
+## 📁 1. Gestion des fichiers et répertoires
+
+| Commande | Utilité |
+| :--- | :--- |
+| `ls -la` | Lister les fichiers avec permissions, propriétaires, dates |
+| `cd`, `pwd` | Se déplacer et afficher le répertoire courant |
+| `cp -r`, `mv`, `rm -rf` | Copier, déplacer/renommer, supprimer (avec prudence !) |
+| `mkdir`, `rmdir` | Créer et supprimer des répertoires |
+| `find / -name "fichier"` | Rechercher des fichiers dans l'arborescence |
+| `grep "pattern" fichier` | Chercher du texte dans des fichiers (indispensable) |
+| `tar -czvf`, `tar -xzvf` | Compresser/décompresser des archives .tar.gz |
+| `chmod`, `chown` | Modifier les permissions et propriétaires des fichiers |
+
+---
+
+## 👤 2. Gestion des utilisateurs et groupes
+
+| Commande | Utilité |
+| :--- | :--- |
+| `useradd -m -s /bin/bash user` | Créer un utilisateur avec son home et son shell |
+| `passwd user` | Définir ou changer le mot de passe |
+| `usermod -aG groupe user` | Ajouter un utilisateur à un groupe secondaire |
+| `userdel -r user` | Supprimer un utilisateur et son home |
+| `groupadd`, `groupdel` | Créer/supprimer des groupes |
+| `id user` | Afficher l'UID, GID et groupes d'un utilisateur |
+| `who`, `whoami`, `w` | Savoir qui est connecté et ce qu'il fait |
+
+---
+
+## ⚙️ 3. Gestion des processus et ressources
+
+| Commande | Utilité |
+| :--- | :--- |
+| `ps auxf` | Voir tous les processus en cours avec leur arborescence |
+| `top` ou `htop` | Surveiller en temps réel CPU, mémoire, processus |
+| `kill -9 PID` | Forcer l'arrêt d'un processus (dernier recours) |
+| `killall nom` | Arrêter tous les processus d'un même nom |
+| `nice -n 10 commande` | Lancer un processus avec une priorité modifiée |
+| `renice -n 5 -p PID` | Modifier la priorité d'un processus en cours |
+| `nohup commande &` | Lancer une commande en arrière-plan résistant à la déconnexion |
+| `jobs`, `fg`, `bg` | Gérer les tâches en arrière-plan dans un terminal |
+
+---
+
+## 💾 4. Gestion de la mémoire et du stockage
+
+| Commande | Utilité |
+| :--- | :--- |
+| `free -h` | Voir la mémoire RAM et swap utilisée/disponible |
+| `df -h` | Voir l'espace disque utilisé par partition |
+| `du -sh *` | Voir la taille des dossiers dans le répertoire courant |
+| `mount`, `umount` | Monter/démonter des systèmes de fichiers |
+| `fdisk -l` ou `lsblk` | Lister les disques et partitions |
+| `dd if=/dev/zero of=/dev/sdX bs=1M` | Copier des données à bas niveau (attention !) |
+| `parted` ou `gparted` | Partitionner un disque |
+
+---
+
+## 🌐 5. Gestion du réseau
+
+| Commande | Utilité |
+| :--- | :--- |
+| `ip a` ou `ifconfig` | Afficher les interfaces réseau et leurs adresses IP |
+| `ping -c 4 google.com` | Tester la connectivité réseau |
+| `ss -tulpn` | Voir les ports ouverts et les services qui écoutent (remplace `netstat`) |
+| `curl -v http://...` | Tester des requêtes HTTP/HTTPS avec détails |
+| `wget http://...` | Télécharger un fichier depuis le web |
+| `nslookup` ou `dig` | Résoudre des noms de domaine (DNS) |
+| `traceroute` | Voir le chemin réseau emprunté jusqu'à une destination |
+| `firewall-cmd` | Gérer le pare-feu `firewalld` (CentOS/RHEL) |
+
+---
+
+## 📋 6. Logs et surveillance système
+
+| Commande | Utilité |
+| :--- | :--- |
+| `journalctl -xe` | Voir les logs système avec contexte et explications |
+| `journalctl -u service -f` | Suivre les logs d'un service en temps réel |
+| `dmesg -T` | Voir les messages du noyau avec horodatage |
+| `tail -f /var/log/messages` | Surveiller les logs système en temps réel (sur systèmes sans systemd) |
+| `systemctl status service` | Voir l'état d'un service et ses dernières logs |
+| `sar -u 5` | Surveiller l'utilisation CPU en temps réel |
+| `vmstat 5` | Surveiller la mémoire, les processus et les I/O |
+
+---
+
+## 🖥️ 7. Gestion des services et du système (systemd)
+
+| Commande | Utilité |
+| :--- | :--- |
+| `systemctl start/stop/restart service` | Démarrer/arrêter/redémarrer un service |
+| `systemctl enable/disable service` | Activer/désactiver un service au démarrage |
+| `systemctl list-units --type=service` | Lister tous les services et leur état |
+| `systemctl daemon-reload` | Recharger les fichiers de configuration des services |
+| `reboot`, `shutdown -h now` | Redémarrer ou éteindre le système |
+| `hostnamectl` | Voir/modifier le nom d'hôte du système |
+
+---
+
+## 🔐 8. Sécurité et gestion des droits
+
+| Commande | Utilité |
+| :--- | :--- |
+| `sudo` | Exécuter une commande en tant qu'administrateur |
+| `visudo` | Modifier en sécurité le fichier `/etc/sudoers` |
+| `chmod 750 fichier` | Définir des permissions spécifiques |
+| `chown user:group /chemin` | Changer le propriétaire et le groupe d'un fichier |
+| `setfacl`, `getfacl` | Gérer les ACL (permissions avancées) |
+| `openssl` | Générer des certificats, hash des mots de passe, etc. |
+| `last -20` | Voir les dernières connexions des utilisateurs |
+
+---
+
+## 🗄️ 9. Gestion des paquets (CentOS/RHEL)
+
+| Commande | Utilité |
+| :--- | :--- |
+| `dnf install/remove/update paquet` | Installer/supprimer/mettre à jour un paquet |
+| `dnf search mot-clé` | Rechercher un paquet dans les dépôts |
+| `dnf list installed` | Lister tous les paquets installés |
+| `dnf info paquet` | Afficher les informations d'un paquet |
+| `dnf groupinstall "Groupe"` | Installer un groupe de paquets (ex: "Serveur Web") |
+
+---
+
+## 🏆 En résumé : la "Top 10" des indispensables
+
+Si vous deviez n'en mémoriser que 10, ce seraient celles-ci :
+
+1.  **`ls -la`** – Voir ce qui se trouve dans le système
+2.  **`cd`** – Se déplacer
+3.  **`grep`** – Chercher des informations dans les fichiers
+4.  **`tail -f`** – Surveiller les logs en temps réel
+5.  **`systemctl`** – Gérer les services
+6.  **`journalctl`** – Enquêter sur les problèmes via les logs
+7.  **`top/htop`** – Surveiller les performances en direct
+8.  **`ps auxf`** – Voir ce qui tourne sur le système
+9.  **`ip a` / `ss -tulpn`** – Diagnostiquer le réseau
+10. **`sudo`** – Le pouvoir d'agir (avec responsabilité)
+
+---
+
+💡 **Conseil final** : Un bon admin ne connaît pas toutes les options par cœur, mais il sait **où chercher** (`man commande`, `--help`, `apropos`). L'important
+ est de maîtriser l'existence de ces commandes et leur usage principal. La pratique
+ régulière sur des **cas concrets** (comme dans les laboratoires KodeKloud ou les projets GitHub) vous les fera intégrer naturellement.

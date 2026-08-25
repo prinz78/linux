@@ -546,7 +546,7 @@ d'utiliser des outils comme une calculatrice qui peuvent aider l'adminstrateur.
 
 date (permet d'avoir la date avec plus de precision)
 
-uptime (permet d'avoir une vue d'ensemble rapide sur qui est connete les processus en cour, depuis combient detemp la machine est en marche)
+uptime (permet d'avoir une vue d'ensemble rapide sur qui est connete les processus en cour, depuis combien de temp la machine est en marche)
 
 hostname (permet de savoir sur quel machine on est connecte)
 
@@ -569,7 +569,7 @@ les processus par leur ID.
 
 -Daemon : reste generalement en arriere plan discretement et ecoute les entrees sortie des trafics des process.
 
--threads : ils sont genere par les processus par exemple : pour le NFS(Network File Systeme) permet aux utilisateur qui se conaictent de facon distante de partager les repertoires
+-threads : ils sont generé par les processus par exemple : pour le NFS(Network File Systeme) permet aux utilisateur qui se conaictent de facon distante de partager les repertoires
 et les fichiers comme si ils etaient sur leur propre machine, a cahque fois qu'il y a ce partage le process cree un thread pour chaque machine
 
 -job or workers : execute de facon programe un service ou un process a un moment definis par l'utilisateur.
@@ -733,7 +733,7 @@ atd (le nom du processus/daemon qui est actif)
     at 8:00 AM Sat
     at 10:00 AM next mount
 
-## Process Management : process management concerne tou ce qui ce rattache au démarage, arret, la mise en en avant plan ou en arrie plan ou le classer dans liste des priorités.
+## Process Management : process management concerne tou ce qui ce rattache au démarage, arret, la mise en avant plan ou en arriere plan ou le classer dans liste des priorités.
 les commandes sont les suivantes :
 
 Ctrl-z (permet juste d'arreter le process en avant plan, et pas de l'annuler)
@@ -746,7 +746,7 @@ fg (permet de remetre le processus en avant plan)
 
 nohup process & (permet de continuer a executer le processus même si la console est fermé, crée aussi un fichier log nohup.output)
 
-nohup process & > /dev/null/ 2>&1 & (permet de continuer l'execution du processus meme si la console est fermö, et ne cree pas le fichier log,
+nohup process & > /dev/null/ 2>&1 & (permet de continuer l'execution du processus meme si la console est fermés, et ne cree pas le fichier log,
 car tout est redirigé vers le repertoire des fichier temporaire)
 
 nice -n numero_de_priorité (permet de priorisé un processus par à port a d'autres, jusqu'à 20 processus plus le nombre est bas plus le processus est prioritaire)
@@ -771,7 +771,7 @@ Rapport CPU (extrait de iostat -c) :
 
     %system : Utilisation du CPU par le système (niveau noyau).
 
-    %iowait : Pourcentage de temps où le CPU était inactif mais avait une demande d'I/O disque en attente. Une valeur élevée indique souvent un goulot d'étranglement du disque.
+    %iowait : Pourcentage de temps où le CPU était inactif mais avait une demande d'I/O disque en attente. Une valeur élevée indique souvent un goulet d'étranglement du disque.
 
 Rapport Disque (avec l'option -x pour les détails) :
 
@@ -814,6 +814,53 @@ cat /var/log/mailog | more (permet de voir pourquoi les emails ne sont pas envoy
 
 cat /var/log/secure | more (toutes les informations sur la securite connexions et autres)
 
+
+-Journalctl for Troubleshooting : La commande "journalctl" est une commande tres puissante pour le monitoring et le suivis du systeme du boot jusqu'aux comprotement utlisateur, il affiche un log complé et detaillé de :
+
+    *Pourquoi le service à faillit?
+    *Pourquoi le systeme est lent?
+    *pourquoi l'utilisateur ne peut pas se logger?
+    *pourquoi la machine a redemarée?
+
+le systeme retourne toujours des message utile pour faire la maintenance et la reparation, en realité il y a trois processus et service qui surveillent le systeme :
+
+    1.systemd
+    2.journald
+    3.journalctl
+
+la particularité de journalctl c'est qu'il peut lire les logs crée par ces derniers :
+
+journalctl (utilisé à lui seul retourne un log tres long a lire)
+
+journalctl | more(permet de lire les log de facon scrolable cad parcourable avec la touche entré pour ligne par ligne ou la touche espace page par page)
+
+journalctl -n 20 (est plus directe car il raporte les 20 dernierre ligne du log)
+
+journal -f ( cree un live monitoring qui est tres important pour tetster un service redemarer un processus ou autre, verifier les activité utilisateur en temp réel)
+
+journalctl -b (enléve les sequences de boot du rendu du log et affiche seulement les autres informations depuis le dernier boot)
+
+journalctl --list-boots (affiche tout les sessions boot de la machine depuis le tout premier boot )
+
+journalctl -u nom_de_unit (il permet d'afficher le log du service voulus comme "sshd" par exemple)
+
+journalctl --since today (permet d'afficher le log d'aujourd'hui)
+
+journactl --since "2026-05-15 11:00:00" (permet d'afficher le log depuis la date et l'heure precisé)
+
+journalctl -p err (permet de retourner un log qui liste les priorité et niveau d'erreurs)
+
+journalctl -p warning (retourne un log d'avertissement, car tout les erreurs peuvent ne pas etre complete pour etre identifier comme erreur par le systeme)
+
+journalctl -xe (retourne un log tres claire et bien expliqué des erreurs rencontré. "xe" veut dire "explanation")
+
+journalctl --no-pager (retourne un bon format de log pour l'enregistrer dans un fichier pour l'utiliser dans un script par exemple)
+
+journalctl /usr/sbin/service_unit (permet de donner un bon log sur le service unit lui meme et voir ce qu'il fait au moment T)
+
+journalctl UID=numero_uid (permet d'avoir le log du comportement utilisateur dans le systeme)
+
+journalctl --disk-usage (permet de retourner le comportement du disque dur)
 
 
 
