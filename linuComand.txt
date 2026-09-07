@@ -752,9 +752,9 @@ car tout est redirigé vers le repertoire des fichier temporaire)
 nice -n numero_de_priorité (permet de priorisé un processus par à port a d'autres, jusqu'à 20 processus plus le nombre est bas plus le processus est prioritaire)
 
 
-## System Monitoring Command : pour pouvoir faire du monitoring ce qui est indispenssable  pour un adminstrateur systeme, il faut apprendre par coeur les commandes suivante, car elles
+## System Monitoring Command : pour pouvoir faire du monitoring ce qui est indispenssable  pour un adminstrateur systeme, il faut apprendre par
 
-permetent de bien visuealiser l'etat du materiel et des processes:
+coeur les commandes suivante, car elles permetent de bien visuealiser l'etat du materiel et des processes:
 
 top (permet d'afficher un moniteur qui renvois des informations complete en liste de ce qui est utiliser par quel utilisateur)
 
@@ -771,7 +771,9 @@ Rapport CPU (extrait de iostat -c) :
 
     %system : Utilisation du CPU par le système (niveau noyau).
 
-    %iowait : Pourcentage de temps où le CPU était inactif mais avait une demande d'I/O disque en attente. Une valeur élevée indique souvent un goulet d'étranglement du disque.
+    %iowait : Pourcentage de temps où le CPU était inactif mais avait une demande d'I/O disque en attente. Une valeur élevée indique souvent un
+
+    goulet d'étranglement du disque.
 
 Rapport Disque (avec l'option -x pour les détails) :
 
@@ -800,15 +802,15 @@ qu'il faut observé sont :
 
 cat /var/log/messages | more ou pour rechercher quelque chose de specifique grep -i error messages (la premierre chose que doit fair un administrateur
 
-systeme en cas d'erreur ou de panne systeme est de cpnssulter le fichier lo "messages")
+systeme en cas d'erreur ou de panne systeme est de consulter le fichier lo "messages")
 
-cat /var/log/boot.log | more (pour voir la sequence de boot depuis le dernier dematage)
+cat /var/log/boot.log | more (pour voir la sequence de boot depuis le dernier demarage)
 
 cd /var/log/chrony/ (c'est un répertoire essentiel pour garder une trace de l'activité du service NTP et résoudre les problèmes d'heure système.)
 
 cat /var/log/cron | more (Pour afficher un log sur tout les jobs executé et programmé)
 
-cat /var/log/dmesage | more (donne des informaztions sur le materiel )
+cat /var/log/dmesage | more (donne des informations sur le materiel )
 
 cat /var/log/mailog | more (permet de voir pourquoi les emails ne sont pas envoyer ou autre deffaut concernant l'envois et la reception d'email)
 
@@ -861,6 +863,35 @@ journalctl /usr/sbin/service_unit (permet de donner un bon log sur le service un
 journalctl UID=numero_uid (permet d'avoir le log du comportement utilisateur dans le systeme)
 
 journalctl --disk-usage (permet de retourner le comportement du disque dur)
+
+
+## System maintenance command : permet de redemarer le systeme et de faire les maintenances souhaitées
+
+shutdown -h now (permet d'etteindre la machine, imediatement )
+
+shutdown -h 14:05 (permet d'eteindre la machine à l'heure indiqué )
+
+init 0-6 (permet de redemarer les unité selon la sequence de boot pour eviter un crash du systeme)
+
+reboot -h now (meme principe que shutdown mais juste pour le redemarage)
+
+halt (permet d'arreter le systeme de facon brutal en fesant un kill general de tout les services)
+
+
+## changer le nom de la machine : on change le nom de la machine pas genralement appelö hostname pour redefinire le domaine, mais biensur c'est fesable à nimport quel moment :
+
+hostnamectl set-hostname nouveau_nom_de_la_machine (change le hostname) + init 6 (redemare le systeme de fichier ce qui permet de renomer le hostname sans faire un reboot total)
+
+
+## Finding system information : il est important autant qu'administrateur systeme de savoir quel sont les specifité du systeme d'exploitation et de la machine qu'on administre :
+
+cat /etc/redhat-release (permet de voir la version exacte de notre systeme d'exploitation et la version du noyau)
+
+uname -a (permet de voir la version du kernel des mises a jour systeme et l'architecture)
+
+dmidecode | more (donne la liste de tout le hardware de la machine)
+
+
 
 
 
