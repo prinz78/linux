@@ -883,13 +883,92 @@ halt (permet d'arreter le systeme de facon brutal en fesant un kill general de t
 hostnamectl set-hostname nouveau_nom_de_la_machine (change le hostname) + init 6 (redemare le systeme de fichier ce qui permet de renomer le hostname sans faire un reboot total)
 
 
-## Finding system information : il est important autant qu'administrateur systeme de savoir quel sont les specifité du systeme d'exploitation et de la machine qu'on administre :
+## Finding system information and Architecture : il est important autant qu'administrateur systeme de savoir quel sont les specifité du systeme d'exploitation et de la machine qu'on administre :
 
 cat /etc/redhat-release (permet de voir la version exacte de notre systeme d'exploitation et la version du noyau)
 
 uname -a (permet de voir la version du kernel des mises a jour systeme et l'architecture)
 
 dmidecode | more (donne la liste de tout le hardware de la machine)
+
+
+### La commande sosreport :
+
+-Définition et utilité
+
+sosreport (ou la commande plus récente sos report) est un utilitaire en ligne de commande qui permet de rassembler en une seule archive un grand
+
+nombre d'informations sur la configuration et l'état d'un système Linux.
+
+Son objectif principal est de fournir une "boîte noire" du système, un instantané complet de son fonctionnement. Cet outil
+
+est très apprécié par les administrateurs système et les équipes de support (comme celles de Red Hat, Google Cloud ou Dell) car
+
+il offre une méthode standardisée et automatisée pour récupérer toutes les données nécessaires à une enquête approfondie.
+
+-Que contient une archive sosreport ?
+
+Pour générer ce rapport, sosreport utilise des modules complémentaires (plugins) qui interrogent différents
+
+sous-systèmes de la machine. L'archive finale, qui est un fichier compressé .tar.xz, contient généralement :
+
+    Informations système générales : Version du noyau, nom d'hôte, temps de fonctionnement, matériel (CPU, mémoire), etc..
+
+    Fichiers de configuration : Les fichiers de configuration des services et de l'OS, souvent issus des répertoires /etc/.
+
+    Journaux système (logs) : Les logs historiques, comme ceux de /var/log/ et du journal systemd.
+
+    Sorties de commandes : Les résultats de nombreuses commandes de diagnostic (ex: df -al pour l'espace disque, ip a pour
+
+    le réseau, ps pour les processus).
+
+    Liste des paquets installés : La liste des logiciels installés via le gestionnaire de paquets
+
+
+## Terminal controle key : racourcis pour le terminal
+
+CTRL-u (efface la ligne du prompt en cour)
+
+CTRL-c (tue le processus ou le service)
+
+CTRL-z (suspend la commande sans la tuer)
+
+CTRL-d (quite un programe interactive)
+
+clear (efface le les propmpt precedent de l'ecran du terminal)
+
+exit (sort de du terminal ou de la session admin)
+
+script nom_du_script (enregistre tout les activité faite sur le terminal)
+
+
+### Recover Root Password : il faut passer par les etapes suivante pour changer le mot de passe "root" en cas d'oublis :
+
+1- restart ou reboot
+
+2- aller sur le grub en apuyant sur "e" et replacer le parametre "ro/" (read only) par c/ (change), pour la version 9
+
+tapper "rd.break" à la fin de la ligne de la version ($root)et appyer CTRL-x pour quiter le GRUB.
+
+pour les ancienne version on continue dans l'ordre
+
+    1*il faut par la suite ecrire "init=/sysroot/bin/sh"
+    2*CTRL-x
+
+3-sur l'invite taper  "chroot /sysroot"
+
+4-tapper 2passwd root"
+
+5-Tapper "reboot"
+
+
+
+
+
+
+
+
+
 
 
 
