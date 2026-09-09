@@ -962,6 +962,24 @@ pour les ancienne version on continue dans l'ordre
 5-Tapper "reboot"
 
 
+### les variables d'environements: elles sont utilisé pour definire des regles et des valeurs pour construire un environement aifn de conditioner le comportement de notre machine :
+
+printenv | more or env | more (permet d'afficher toutes les variable d'environements)
+
+echo $SHELL (permet de voir le contenu d'une variable d'environement comme dans notre exemple retrourne la variable du contenus de la variable $SHELL)
+
+export TEST=1 + echo $TEST ( permet d'assigner une valeur a la variabletest, par la suite on l'affiche pour etre sure que l'operation est ok, mais apres la fin de session
+
+le changement de valeur de variable n'est pas enregistré)
+
+vi .bashrc (c'est un fichier quipermet de configurer les variable d'environements et de les enregistrer une fois pour toute) :
+
+        *on ajoute la valeur de la variable dans le fichier .bashrc : TEST='123'
+        *et on l'enregistre : export TEST
+
+vi /etc/profile or /etc/bashrc (c'est la ou on peut manipuler les variables globales d'environement et les enregistrer definitivement)
+
+
 
 
 
