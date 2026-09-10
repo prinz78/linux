@@ -981,6 +981,108 @@ vi /etc/profile or /etc/bashrc (c'est la ou on peut manipuler les variables glob
 
 
 
+### The screen command : c'est une application qui permet de crée plusieurs session terminal en un seul, il partage de facon graphique l'écran.
+
+on appel ce concept "GNU Screen Terminal Multiplexer", c'est un outils tres important pour un adminsysteme car il permet
+
+d'avoir une vue complete sur les longues taches en cour et le controle à distance des machines.
+
+rpm -qa | greep screen (pour verifier si Screen sont installé)
+
+dnf install screen (pour installer screen)
+
+* si Screen ne s'install pas, cela veut dire qu'il doit etre installer depuis le repertoire(Package) epel-release, que ce repertoire lui meme doit etre installé :
+
+dnf install epel-release
+
+dnf install screen
+
+- maintenant on manipule Screen pour multiplexer toutes les partis possible :
+
+ctrl + a : alt gr + 7 (permet d'ajout un nouvelle ecran dans le terminal de facon verticale)
+
+ctrl + a ; shift + S (permet d'ajout un nouvelle ecran dans le terminal de facon horizentale)
+
+ctrl + a ; tab (permet de passer d'un ecran a un autre)
+
+ctrl + a : c (crée une nouvelle session)
+
+Tuer la session screen	Ctrl + A puis K, confirmer y
+
+Quitter via le shell	exit
+
+Détacher (laisser tourner)	Ctrl + A puis D
+
+Reprendre une session détachée	screen -r
+
+Fermer une zone (split)	Ctrl + A puis X
+
+Fermer les autres zones	Ctrl + A puis Q
+
+screen -r (permet d'afficher la liste de tout les ecran ouvert, atached veut dire que c'est en forgroung et detached veut dire que l'ecran est en background )
+
+screen -r process_id (permet de recuperer le processus en arriere plan)
+
+
+
+### TMUX : c'est une application qui permet de crée plusieurs session terminal en un seul Terminal(meme principe que screen mais plus moderne), il partage de facon graphique l'écran.
+
+il permet de :
+
+*spliter les terminaux.
+
+*basculer entre les volets.
+
+*detacher les sessions
+
+*ratacher les sessions
+
+- les commandes sont :
+
+rpm -qa | grep tmux(pour verifier si tmux est installà)
+
+dnf install tmux -y (installer tmux avec l'option "-y" validation de toutes les requetes par yes)
+
+tmux (demarer la session TMUX) :
+
+    *"[0]" -> Current Session number or name
+
+    *"0:bash" -> Window 0
+
+    *"*" -> Active window
+
+CTRL + b ; SHIFT % (pour separer l'ecran de facon vertical)
+
+CTRL + b ; plus une touche directionnel (pour passer entre les partis de l'ecran)
+
+CTRL + b ; SHIFT " (permet de separer l'ecran de facon horizental)
+
+CTRL + b ; d (permet de se detacher de la session TMUX)
+
+tmux ls (dans le terminal linux et non tmux ca nous permet de voir les sessions en cour)
+
+tmux a (permet de revenir a la session tmux)
+
+tmux new -s nom_de_la_session (cree une session avec le nom souhaité)
+
+CTRL + B ; C (permet de crée une fenetre non separé)
+
+CTRL + B ; N (permet de passer d'une fenetre a une autre non separer, l'indicateur c'est l'etoile en bas)
+
+CTRL + D (permet d'effacer les session speraré ou pas)
+
+tmux attach-session -t numero_de_la_session ou le nom_de_la_session (permet de revenir a la session souhaité car on peut crée plusieurs session à la fois)
+
+CTRL + b ; , (permet de renomer la session)
+
+tmux kill-session -t numero_de_la_session ou le nom_de_la_session (permet de tuer la session)
+
+
+
+
+
+
+
 
 
 
