@@ -409,7 +409,7 @@ sed '8! s/mot1/c/' nom_du_fichier (remplace mot1 par le caractere c sauf la lign
 
 useradd nom_utilisateur (ajoute utilisateur)
 
-useradd -g nom_utilisateur groupe_pour_utilisateur (ajoute utilisateur et l'affecte a un nouveau groupe)
+useradd -g groupe_pour_utilisateur nom_utilisateur (ajoute utilisateur et l'affecte a un nouveau groupe)
 
 useradd -c "commentaire "nom_utilisateur (ajoute utilisateur avec un commentaire)
 
@@ -427,7 +427,7 @@ userdel -r nom_utilisateur (efface l'utilisateur et tout son arboressence)
 
 id nom_utilisateur (permet d'avoir les information sur l'utilisateur)
 
-cat /etc/shadowfile (permet aussi d'avoir des infos sur l'utilisateur)
+cat /etc/shadow (permet aussi d'avoir des infos sur l'utilisateur)
 
 cat /etc/passwd (permet aussi d'avoir des infos sur l'utilisateur)
 
@@ -564,10 +564,9 @@ bc (permet de faire des calcules)
 
 -script : c'est un enssembles de scommandes qui sont dans un fichier executable pour demarer un service ou lancer une commande linux par exemple.
 
--process : quand un service est lance il demare un ou plusieurs processus comme la carte reseau par exemple qui lance plusieurs protocoles pour communiquer. On reconait
-les processus par leur ID.
+-process : un processus s'exécute pour accomplir une tâche spécifique, puis se termine.
 
--Daemon : reste generalement en arriere plan discretement et ecoute les entrees sortie des trafics des process.
+-Daemon : tandis qu'un démon fonctionne en arrière-plan de manière continue, attendant des demandes ou des événements, comme un serveur web.
 
 -threads : ils sont generé par les processus par exemple : pour le NFS(Network File Systeme) permet aux utilisateur qui se conaictent de facon distante de partager les repertoires
 et les fichiers comme si ils etaient sur leur propre machine, a cahque fois qu'il y a ce partage le process cree un thread pour chaque machine
@@ -946,7 +945,7 @@ script nom_du_script (enregistre tout les activité faite sur le terminal)
 
 1- restart ou reboot
 
-2- aller sur le grub en apuyant sur "e" et replacer le parametre "ro/" (read only) par c/ (change), pour la version 9
+2- aller sur le grub en apuyant sur "e" et replacer le parametre "ro/" (read only) par "rw/" (change), pour la version 9
 
 tapper "rd.break" à la fin de la ligne de la version ($root)et appyer CTRL-x pour quiter le GRUB.
 
