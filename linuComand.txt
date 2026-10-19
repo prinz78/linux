@@ -165,7 +165,7 @@ telnet localhost 2> ficherreur
 
 ====================================================/TEXT PROCESSOR COMMAND/+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-# pour rediriger dans un fichier est ene même temps afficher a l'ecran le resultat d'une commande on utilise "tee" avec le pipe "|", exemple :
+# pour rediriger dans un fichier et ene même temps afficher a l'ecran le resultat d'une commande on utilise "tee" avec le pipe "|", exemple :
 
 ls -ltr | tee file1 file2 fileN (enregistre le resultat possible dans plusieurs fichier en meme temps mais ecrase a chaque fois le precedent)
 
@@ -1078,7 +1078,7 @@ tmux kill-session -t numero_de_la_session ou le nom_de_la_session (permet de tue
 
 
 
-
+====================================================/Shell Scripting/+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 
