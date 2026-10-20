@@ -1080,6 +1080,56 @@ tmux kill-session -t numero_de_la_session ou le nom_de_la_session (permet de tue
 
 ====================================================/Shell Scripting/+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+-le kernel est une interface entre le materiel est le shell
+
+-le kernel + le shell consiste le systeme d'exploitation
+
+le shell plus les logiciels utilisateurs
+
+-un shell peut etre graphique comme windows, pi en ligne de commande comme la Bash.
+
+
+
+### Modules : si le noyau essaye de gerer tous les dispositifs matériels et toutes les fonctionnalités par lui-meme il devient trop volimineux et difficile a utiliser.
+
+pour eviter cela linux utilise une conception modulaire cette conception permet au noyau de rester petit tout en étant capable d'étendre ces fonctionnalités en cas de besoin pour cela
+
+on a cree les modules :
+
+-module builtin : sont integrés au noyau de facon deffinitive ou dechargeable apres la sequence de booot, par ce que necessaires au demarge .
+
+-les modules des kernel sont souvent utilisé par les pilotes de matériel, la prise en charge du systeme de fichier, protocoles du reseau.
+
+-quand on connecte un nouveau materiel ou q'une fonction est requise pour une element materiel le kerrnel demande automatiquement le module qui par la suite est telechargé pa l'outils standard de gestion de nodule.
+
+-les modules sont chargé directement a l'interieur du kernel et on acces directe aux ressources du systéme, ceci peut rendre le kernel tres puissant et en meme temp tres fragile si un module s'averre instable
+
+il peut entrainer le systeme complet dans sa chute c'est pour ca que linux fournit des outils pour charger, gerer les modules et les decharger en toute sécurité, voici les commandes suivantes qui peuvent effecteur
+
+cette fonction :
+
+-insmod : permet de charger un fichier de module specifique, il n'effectue qu'une seule tache, à savoir l'insertion de module sans veriefier si d?autres modules sont necessaire à son insertion.
+
+-modprob : est le plus utilisé dans linux car il permet de charger d'abord les modules necessaire aux module cle.
+
+-lsmod: permet de lister les module chargé, est utilisé pour maintenance des problemes materielle, performer les panne, invistigation de securité.
+
+-ls /lib/modules/ : permet d'afficher la liste de tout les modules disponible.
+
+-les dechargement de module permet de verifier d'abord si les autres modules ne sont pas necessaire en relation avec un autre module avant le decharger, ceci donne une securité suplementaire au moyau.
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
