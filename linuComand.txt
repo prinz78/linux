@@ -1080,13 +1080,13 @@ tmux kill-session -t numero_de_la_session ou le nom_de_la_session (permet de tue
 
 ====================================================/Shell Scripting/+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
--le kernel est une interface entre le materiel est le shell
+-le kernel est une interface entre le materiel et le shell
 
 -le kernel + le shell consiste le systeme d'exploitation
 
 le shell plus les logiciels utilisateurs
 
--un shell peut etre graphique comme windows, pi en ligne de commande comme la Bash.
+-un shell peut etre graphique comme windows, ou en ligne de commande comme la Bash.
 
 
 
@@ -1096,11 +1096,11 @@ pour eviter cela linux utilise une conception modulaire cette conception permet 
 
 on a cree les modules :
 
--module builtin : sont integrés au noyau de facon deffinitive ou dechargeable apres la sequence de booot, par ce que necessaires au demarge .
+-module builtin : sont integrés au noyau de facon deffinitive ou dechargeable apres la sequence de boot, par ce que necessaires au demarge .
 
 -les modules des kernel sont souvent utilisé par les pilotes de matériel, la prise en charge du systeme de fichier, protocoles du reseau.
 
--quand on connecte un nouveau materiel ou q'une fonction est requise pour une element materiel le kerrnel demande automatiquement le module qui par la suite est telechargé pa l'outils standard de gestion de nodule.
+-quand on connecte un nouveau materiel ou q'une fonction est requise pour un element materiel le kerrnel demande automatiquement le module qui par la suite est telechargé par l'outils standard de gestion de nodule.
 
 -les modules sont chargé directement a l'interieur du kernel et on acces directe aux ressources du systéme, ceci peut rendre le kernel tres puissant et en meme temp tres fragile si un module s'averre instable
 
@@ -1108,15 +1108,43 @@ il peut entrainer le systeme complet dans sa chute c'est pour ca que linux fourn
 
 cette fonction :
 
--insmod : permet de charger un fichier de module specifique, il n'effectue qu'une seule tache, à savoir l'insertion de module sans veriefier si d?autres modules sont necessaire à son insertion.
+-insmod : permet de charger un fichier de module specifique, il n'effectue qu'une seule tache, à savoir l'insertion de module sans veriefier si d'autres modules sont necessaire à son insertion.
 
--modprob : est le plus utilisé dans linux car il permet de charger d'abord les modules necessaire aux module cle.
+-modprobe : est le plus utilisé dans linux car il permet de charger d'abord les modules necessaire aux modules cle.
 
 -lsmod: permet de lister les module chargé, est utilisé pour maintenance des problemes materielle, performer les panne, invistigation de securité.
 
 -ls /lib/modules/ : permet d'afficher la liste de tout les modules disponible.
 
 -les dechargement de module permet de verifier d'abord si les autres modules ne sont pas necessaire en relation avec un autre module avant le decharger, ceci donne une securité suplementaire au moyau.
+
+
+
+### Definition Shell and screpting : est comme un conteneur qui consiste à etre une interface entre l?utilisateur et le kernel.
+
+-Windows GUI est un shell, linux KDE GUI est un shell, linux KDE GUI est un shell, linux Bash ou sh est un shell, csh et tcsh sont des shell en modele C, ksh est un shell adapté à Solaris.
+
+-Quand on utilise une application cette dernierre correspond avec le shell qui lui transmet la requette au Kernel.
+
+echo $0(pour trouver le shell preconfiguré)
+
+cat /etc/shells(pour voir les shells disponible)
+
+cat /etc/passwd (pour voir les shells utilisé par les utilisateurs)
+
+-pour le screpting on utilise les syntaxes suivante dans le fichier du scripte :
+
+#!/bin/bash(à la premiere ligne du fichier, cette syntaxe declare que le fichier est un scripte)
+
+# un commentaire(premet de commenter le scripte)
+
+echo, cp, grep, ...etc (ce sont des commandes regulierre qui permetent d'ecrire le scripte)
+
+if, while, for, ..etc (ce sont des structures de donnes pour conditioner et boucler les informations dans le scripte)
+
+read (permet une entrée comme le clavier)
+
+- if else statment :
 
 
 
