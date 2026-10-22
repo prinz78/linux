@@ -1144,7 +1144,71 @@ if, while, for, ..etc (ce sont des structures de donnes pour conditioner et bouc
 
 read (permet une entrée comme le clavier)
 
-- if else statment :
+- if else statment : structure conditionnelles pour faire des teste dans le script, exemple :
+
+#!/bin/bash
+
+count=100
+
+clear
+if [$count == 100]
+    then
+    echo le compte est 100
+    else
+    echo le compte n'est pas 100
+fi
+
+- for do statment : structure itératives pour faire cree une boucle dans un script, exemples :
+
+#!/bin/bash
+
+for i in 1 2 3 4 5
+do
+ echo "welcome $i times"
+done
+
+for i in eating jumping playing running sleeping
+do
+ echo "ml is $i"
+done
+
+-while do statment : meme chose mais a fonction du test subit par la variable, exemple:
+
+#!/bin/bash
+
+button="o"
+
+while [ $button -ne "s" ]
+do
+ echo "appuyez sur 's' pour sortir du programme"
+done
+
+-Case statment: permet de cree un structure de choix multiple avec un code simplifié :
+
+#!/bin/bash
+
+echo
+echo "please chose one of the options"
+echo
+echo "a = Display Data and Time"
+echo "b = List file and directories"
+echo "c = List users logged in"
+echo "d = Check system uptime"
+echo
+
+        read choices
+        case $choices in
+
+         a) date;;
+         b) ls;;
+         c) who;;
+         d) uptime;;
+         *) echo invalide choice
+
+        esac
+
+
+
 
 
 
